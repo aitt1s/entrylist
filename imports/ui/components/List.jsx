@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
-
 import { Entries } from '../../api/Entries.js';
 import SingleEntry from './SingleEntry.jsx';
 
