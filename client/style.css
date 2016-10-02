@@ -1,8 +1,12 @@
 .navbar {
-  margin-bottom: 10px !important;
+  margin-bottom: 30px !important;
 }
 
 .entry-input {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.register-form {
+  margin-right: 5px;
 }

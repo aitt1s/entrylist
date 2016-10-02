@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import { Entries } from '../../api/Entries.js';
 
-const addressName = params.name;
-const currentEntry = Entries.find({name: addressName);
-console.log(currentEntry);
+export default class Entry extends TrackerReact(React.Component) {
 
-export const Entry = ( { params } ) => (
-  <h3>Howdy, { params.name }!</h3>
-);
+  entry() {
+    return Entries.findOne(this.props.params.id);
+  }
 
-export default Entry;
+  render() {
+    let res = this.entry();
+    if(!res) {
+      return <div className="container">Loading</div>
+    }
+
+    return (
+      <div className="container">
+        <h3>{res.name}</h3>
+      </div>
+    )
+  }
+};

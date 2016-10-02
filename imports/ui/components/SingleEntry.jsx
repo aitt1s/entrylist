@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export default class SingleEntry extends Component {
   render() {
     return (
-      <li><Link to={"/e/" + this.props.entry.name}>{this.props.entry.name}</Link> {this.props.entry.text}</li>
+      <li><Link to={`/e/${this.props.entry._id}`}>{this.props.entry.name}</Link> {this.props.entry.text}</li>
     );
   }
 }

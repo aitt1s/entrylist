@@ -33,3 +33,4 @@ check@1.2.3
 shell-server
 fortawesome:fontawesome
 react-meteor-data
+ultimatejs:tracker-react
