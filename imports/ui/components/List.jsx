@@ -2,9 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Entries } from '../../api/Entries.js';
 import SingleEntry from './SingleEntry.jsx';
-import TrackerReact from 'meteor/ultimatejs:tracker-react';
 
-class List extends TrackerReact(React.Component){
+class List extends Component {
   constructor() {
     super();
     this.state = {
@@ -14,7 +13,6 @@ class List extends TrackerReact(React.Component){
 
   filterThis() {
     let filterparams = this.props.filters;
-    console.log(filterparams);
     if(filterparams.length == 0) {
       entries = Entries.find({}).fetch();
     }
@@ -50,7 +48,7 @@ List.propTypes = {
   entries: PropTypes.array.isRequired,
 };
 
-export default createContainer(() => {
+export default ListContainer = createContainer(() => {
   Meteor.subscribe('entries');
   return {
     entries: Entries.find({}).fetch(),

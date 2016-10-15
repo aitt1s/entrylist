@@ -13,10 +13,22 @@ export default class Login extends Component {
 
     Meteor.loginWithPassword(email, password, (err) => {
       if(err) {
-        toaster.warning(err.reason);
+        Bert.alert({
+          title: 'Error',
+          message: err.reason,
+          type: 'danger',
+          style: 'growl-top-right',
+          icon: 'fa-bell'
+        });
       }
       else {
-        toastr.success("Login completed!");
+        Bert.alert({
+          title: 'Login successfully',
+          message: 'Have fun!',
+          type: 'success',
+          style: 'growl-top-right',
+          icon: 'fa-check'
+        });
         browserHistory.push('/');
       }
     });

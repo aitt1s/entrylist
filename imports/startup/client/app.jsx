@@ -7,9 +7,6 @@ import routes from '../../router/routes.js';
 import MainLayout from '../../ui/containers/MainLayout.jsx';
 import AdminLayout from '../../admin/AdminLayout.jsx';
 
-
-toastr.options.preventDuplicates = 'true';
-
 const rootRoute = {
   component: MainLayout,
   childRoutes: routes,

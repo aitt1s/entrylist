@@ -32,8 +32,9 @@ fortawesome:fontawesome
 react-meteor-data
 ultimatejs:tracker-react
 accounts-password
-chrismbeckett:toastr
 momentjs:moment
 less
 twbs:bootstrap
 meteortoys:allthings
+themeteorchef:bert
+themeteorchef:jquery-validation

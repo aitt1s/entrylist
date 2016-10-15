@@ -21,16 +21,34 @@ export default class Register extends Component {
       };
       Accounts.createUser(accountInfo, function(err) {
         if (err) {
-          toaster.warning(err.reason);
+          Bert.alert({
+            title: 'Error',
+            message: err.reason,
+            type: 'danger',
+            style: 'growl-top-right',
+            icon: 'fa-bell'
+          });
         }
         else {
-          toastr.success("Account created!");
+          Bert.alert({
+            title: 'Account created!',
+            message: 'Now you can start creating entries',
+            type: 'success',
+            style: 'growl-top-right',
+            icon: 'fa-check'
+          });
           browserHistory.push('/');
         }
       });
     }
     else {
-      toastr.warning("Passwords don't match!");
+      Bert.alert({
+        title: 'Passwords dont match',
+        message: 'Please check both password fields',
+        type: 'danger',
+        style: 'growl-top-right',
+        icon: 'fa-bell'
+      });
     }
   }
 

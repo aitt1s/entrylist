@@ -10,10 +10,23 @@ class Logged extends React.Component {
     e.preventDefault();
     Meteor.logout((err) => {
       if (err) {
-        toastr.warning(err.reason);
+        Bert.alert({
+          title: 'Error',
+          message: err.reason,
+          type: 'danger',
+          style: 'growl-top-right',
+          icon: 'fa-bell'
+        });
+
       }
       else {
-        toastr.success("Logged out successfully!");
+        Bert.alert({
+          title: 'Logged out successfully',
+          message: 'Please see you soon!',
+          type: 'info',
+          style: 'growl-top-right',
+          icon: 'fa-hand-peace-o'
+        });
         browserHistory.push('/');
       }
     });
@@ -28,7 +41,7 @@ class Logged extends React.Component {
 
   render() {
     return (
-      <ul className="nav navbar-nav pull-right">
+      <ul className="nav navbar-nav navbar-right">
         <li><Link to="/admin">Admin</Link></li>
         <li><a onClick={ this.logOut } >Logout</a></li>
         <li><a href="#">{this.email()}</a></li>

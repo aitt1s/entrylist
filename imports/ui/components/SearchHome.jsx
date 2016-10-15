@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import SingleEntry from './SingleEntry.jsx';
 import AreaComp from './AreaComp.jsx';
+import Busses from './Busses.jsx';
+
 
 export default class SearchHome extends Component {
   constructor() {
@@ -29,7 +31,6 @@ export default class SearchHome extends Component {
       addedSuggestions: array
     }, function() {
       this.props.getSearchFilters(this.state.addedSuggestions);
-      console.log(this.state.addedSuggestions);
     });
   }
 
@@ -54,9 +55,7 @@ export default class SearchHome extends Component {
         <div className="col-xs-12 searchdiv">
           <form className="form-inline" onChange={this.onChange}>
             <div className="form-group main-search">
-              <select className="form-control">
-                <option>Kaikki toimialat</option>
-              </select>
+              <Busses />
             </div>
             <div className="form-group main-search">
               <AreaComp onUpdate={this.onUpdate.bind(this)} />

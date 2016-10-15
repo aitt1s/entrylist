@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
-
 export const Entries = new Mongo.Collection('entries');
 
 if (Meteor.isServer) {
@@ -21,7 +20,6 @@ if (Meteor.isServer) {
       this.ready();
     }
   });
-
 }
 
 Meteor.methods({
@@ -41,6 +39,58 @@ Meteor.methods({
       area,
       mainContent,
       owner: this.userId,
+      published: false
     });
+  },
+
+  'entries.remove'(entryId) {
+    check(entryId, String);
+    Entries.remove(entryId);
+
+    return true;
+  },
+
+  'entries.updatePublication'(entryId, published) {
+    Entries.update(entryId, {
+      $set: { published: published },
+    });
+  },
+
+  'entries.update'(entryId, name, text, area, mainContent) {
+    check(entryId, String);
+    check(name, String);
+    check(text, String);
+    check(mainContent, Object);
+
+    if(Object.keys(mainContent).length === 0 && mainContent.constructor === Object) {
+      if (! this.userId) {
+        throw new Meteor.Error('not-authorized');
+      }
+
+      Entries.update(entryId, {
+        $set: {
+          "name": name,
+          "text": text,
+          "area": area,
+          "editedAt": new Date(),
+        }
+      });
+    }
+    else {
+      if (! this.userId) {
+        throw new Meteor.Error('not-authorized');
+      }
+
+      Entries.update(entryId, {
+        $set: {
+          "name": name,
+          "text": text,
+          "area": area,
+          "mainContent": mainContent,
+          "editedAt": new Date(),
+        }
+      });
+    }
   }
+
 });

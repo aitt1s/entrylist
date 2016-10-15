@@ -26,7 +26,6 @@ class AdminEntries extends Component {
   renderEntries() {
     let Tr = Reactable.Tr,
     Td = Reactable.Td;
-
     return this.props.entries.map((entry) => (
       <Tr key={entry._id}>
         <Td column="Name"><Link to={`/admin/entries/${entry._id}`}>{entry.name}</Link></Td>

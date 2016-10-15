@@ -48,7 +48,7 @@ class AreaComp extends Component {
   // Use your imagination to render suggestions.
   renderSuggestion = suggestion => (
     <div className="suggest-box">
-      {suggestion.mun} { suggestion.pro !== "undefined" ? "" : ", " + suggestion.pro }
+      {suggestion.mun}{ suggestion.pro ? ", " + suggestion.pro : "" }
     </div>
   );
 
@@ -93,6 +93,7 @@ class AreaComp extends Component {
           getSuggestionValue={this.getSuggestionValue}
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
+          id="area"
         />
       </div>
     );

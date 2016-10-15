@@ -9,6 +9,7 @@ export default class MainLayout extends React.Component {
       <div>
         <Header />
         <div className="container-fluid">{this.props.children}</div>
+        <Footer />
       </div>
     );
   }

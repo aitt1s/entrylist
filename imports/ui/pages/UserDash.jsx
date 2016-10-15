@@ -1,9 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import { Entries } from '../../api/Entries.js';
 import { createContainer } from 'meteor/react-meteor-data';
-
+import DashEntry from '../components/DashEntry.jsx';
+import Entry from '../pages/Entry.jsx';
+import { Link } from 'react-router';
 
 class UserDash extends Component {
+  constructor() {
+    super();
+    this.state = {
+      editing: false,
+      editId: "",
+    };
+  }
 
   entriesCount() {
     let a = this.props.entries;
@@ -12,33 +21,64 @@ class UserDash extends Component {
 
   renderEntries() {
     return this.props.entries.map((entry) => (
-      <div key={entry._id} className="panel panel-default">
-        <div className="panel-body">
-          <h4>{entry.name}</h4>
-          <div className="row">
-            <div className="col-xs-3">
-              <div className="small-box bg-red">
-                <div className="inner">
-                  <h2 className="box-indicator">65</h2>
-                  <p>Unique Visitors</p>
-                </div>
-                <div className="icon">
-                  <i className="fa fa-pie-chart"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div key={entry._id} className="single-entry">
+        <DashEntry key={entry._id} entry={entry} getId={this.getId.bind(this)} />
       </div>
     ));
   }
 
+  renderEdit(id) {
+    return (
+      <Entry paramsId={id} edit={this.state.editing} toggleStateOff={this.toggleStateOff.bind(this)} />
+    );
+  }
+
+  createNew() {
+    return (
+      <div className="new-button">
+        <Link to="/create"><div className="btn btn-success btn-lg">Create new!</div></Link>
+      </div>
+    )
+  }
+
+  getId(id) {
+    this.toggleState(id);
+  }
+
+  toggleStateOff() {
+    this.setState({
+      editing: !this.state.editing,
+    });
+  }
+
+  toggleState(id) {
+    this.setState({
+      editing: !this.state.editing,
+      editId: id,
+    });
+  }
+
   render() {
+    console.log(this.props.entries.length);
     return (
       <div className="container">
         <div className="row">
-          <div className="col-xs-6">
-            {this.renderEntries()}
+          <div className="col-xs-12">
+            <div className="page-header result-area">
+              <h3 className="dash-title">Dashboard <small>edit and view your entry</small></h3>
+            </div>
+          </div>
+
+          <div className="col-xs-12">
+            {this.state.editing ? this.renderEdit(this.state.editId) : this.renderEntries()}
+          </div>
+          <div className="col-xs-12">
+            {this.props.entries.length == 0 ?
+              <h4 className="empty-dash">
+                You have no entries, maybe create one?
+              </h4>
+               : "" }
+            {this.state.editing ? "" : this.createNew()}
           </div>
         </div>
       </div>

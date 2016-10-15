@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {Editor, EditorState, ContentState, RichUtils, convertToRaw} from 'draft-js';
+import {Editor, EditorState, ContentState, RichUtils, convertToRaw, convertFromRaw} from 'draft-js';
 
 export default class Wysiwyg extends Component {
     constructor(props) {
       super(props);
-      this.state = {editorState: EditorState.createEmpty()};
+      if(this.props.mainContent) {
+        const {mainContent} = this.props;
+        const contentState = convertFromRaw(mainContent);
+        const editorState = EditorState.createWithContent(contentState);
+        this.state = { editorState };
+        this.logState;
+      }
+      else {
+        this.state = {editorState: EditorState.createEmpty()};
+      }
       this.focus = () => this.refs.editor.focus();
       this.onChange = function(editorState) {
         this.setState({editorState});
@@ -16,6 +25,7 @@ export default class Wysiwyg extends Component {
       this.toggleBlockType = (type) => this._toggleBlockType(type);
       this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
       this.logState = () => this.handleLangChange(this.state.editorState.getCurrentContent());
+
     }
 
     handleLangChange(lang) {
@@ -91,11 +101,6 @@ export default class Wysiwyg extends Component {
               spellCheck={true}
             />
           </div>
-          <input
-   onClick={this.launchTwo}
-   type="button"
-   value="Log State"
- />
         </div>
       );
     }

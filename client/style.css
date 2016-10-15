@@ -424,3 +424,149 @@ body {
 .result-area, .result-area h3 {
   margin-top: 10px;
 }
+
+.scrollable {
+  pointer-events:none;
+}
+
+.preview-area {
+    zoom: 0.3;
+    padding: 10px 0;
+    -moz-transform: scale(0.3);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 900px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.dashboard-control-buttons {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.dash-area {
+  margin-bottom: 20px;
+}
+
+.dash-title {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.entry-input {
+  border: 1px dotted;
+  background-color: rgba(255,255,255,0.3);
+  margin-bottom: 6px;
+}
+
+.entry-input:focus {
+  background-color: rgba(255,255,255,0.8);
+}
+
+#nameInput {
+  font-size: 30px;
+  height: 42px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.edit-controls button {
+  margin-left: 6px;
+}
+
+.new-button {
+  margin-top: 20px;
+}
+
+.not-published {
+  opacity: 0.3;
+}
+
+.growl-top-right {
+  margin-top: 30px;
+}
+
+.edit-panel {
+  margin-bottom: 6px;
+}
+
+.logo-container {
+
+}
+
+.name-container {
+
+}
+
+.logo-image {
+  max-width: 200px;
+}
+
+.jumbotron {
+  background-color: #FFF;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  border: 1px solid #eee;
+}
+
+.header-title {
+  padding-top: 10px;
+  margin-top: 10px;
+  line-height: 1;
+}
+
+.empty-dash {
+  margin-top: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.navbar-collapse {
+  background-color: #FFF;
+  border-bottom: 1px solid #eee;
+}
+
+.footer-distributed p.footer-links a {
+  display: inline-block;
+  line-height: 1.8;
+  text-decoration: none;
+  color: inherit;
+  margin-left: 6px;
+}
+
+.mobile {
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  padding: 5px;
+}
+
+.mobile .footer-right {
+    float: none;
+    margin: 0 auto 10px;
+    max-width: 100%;
+}
+
+.mobile .footer-right a {
+  display: inline-block;
+  width: 45px;
+  height: 40px;
+  background-color: #33383b;
+  border-radius: 2px;
+  font-size: 20px;
+  color: #ffffff;
+  text-align: center;
+  line-height: 42px;
+  margin-left: 40px;
+}
+
+.register-link {
+  font-size: 18px;
+  font-weight: bold;
+}
