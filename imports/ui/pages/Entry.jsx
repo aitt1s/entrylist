@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import ShowWysiwyg from '../components/ShowWysiwyg.jsx';
 import Wysiwyg from '../components/Wysiwyg.jsx';
 import AreaComp from '../components/AreaComp.jsx';
+import LogoUpload from '../components/LogoUpload.jsx';
 import { createContainer } from 'meteor/react-meteor-data';
+import Images from '../../api/Images.js';
 
 class Entry extends Component {
   constructor(props) {
@@ -28,13 +30,33 @@ class Entry extends Component {
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
     const area = this.state.addedSuggestions;
     const mainContent = this.state.editorContent;
-    Meteor.call('entries.update', this.props.entry._id, name, text, area, mainContent);
+    Meteor.call('entries.update', this.props.entry._id, name, text, area, mainContent, (err) => {
+      if(err) {
+        Bert.alert({
+          title: 'Error',
+          message: err.reason,
+          type: 'danger',
+          style: 'growl-top-right',
+          icon: 'fa-bell'
+        });
+      }
+      else {
+        Bert.alert({
+          title: 'Entry edited',
+          message: 'Go and look at it!',
+          type: 'success',
+          style: 'growl-top-right',
+          icon: 'fa-check'
+        });
+      }
+    });
+    this.props.toggleStateOff();
   }
 
   editName(res) {
     return (
       <input
-        className="form-control entry-input"
+        className="form-control entry-edit-input"
         type="name"
         ref="nameInput"
         defaultValue={res.name}
@@ -47,7 +69,7 @@ class Entry extends Component {
   editText(res) {
     return (
         <input
-          className="form-control entry-input"
+          className="form-control entry-edit-input"
           type="name"
           ref="textInput"
           defaultValue={res.text}
@@ -110,6 +132,7 @@ class Entry extends Component {
   }
 
   render() {
+    console.log(this.props);
     let res = this.props.entry;
     if(!res) {
       return <div className="container">Loading</div>
@@ -120,12 +143,31 @@ class Entry extends Component {
         <div className="row">
           <div className="edit-panel col-xs-12">
             <div className="edit-panel-left pull-left">
-              <button className="btn btn-default">Test</button>
+              <button className="btn btn-default" data-toggle="modal" data-target="#logoModal">Change logo file</button>
             </div>
+
+            <div className="modal fade" tabIndex="-1" role="dialog" id="logoModal">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 className="modal-title">Change logo image</h4>
+                  </div>
+                  <div className="modal-body">
+                    <LogoUpload entryId={this.props.entry._id} />
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-primary">Save changes</button>
+                    <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             <div className="pull-right edit-controls">
               <button className="btn btn-success" onClick={this.handleSubmit.bind(this)}>Save</button>
-              <button className="btn btn-warning" onClick={this.onClick.bind(this)}>Cancel</button>
+              <button className="btn btn-default" onClick={this.onClick.bind(this)}>Back</button>
             </div>
           </div>
         </div> : ""
@@ -133,7 +175,9 @@ class Entry extends Component {
         <div className="jumbotron">
           <div className="row">
             <div className="col-sm-3 logo-container">
-              <img src="/img/example-logo.png" className="img-responsive logo-image" />
+              <img src={ this.props.image !== "undefined" ?
+              this.props.image.link() :
+              "http://placehold.it/200x150" } className="img-responsive" />
             </div>
             <div className="col-sm-9 name-container">
               {this.props.edit ? this.editName(res) : <h2 className="header-title">{res.name}</h2> }
@@ -169,13 +213,16 @@ class Entry extends Component {
 
 export default EntryContainer = createContainer(({paramsId, params, toggleStateOff}) => {
   Meteor.subscribe('entries');
+  Meteor.subscribe('images');
   if(paramsId) {
     return {
       entry: Entries.findOne(paramsId),
+      image: Images.findOne({'meta.entryId': paramsId}, {'meta.uxType': 'logo'}),
     }
   }
 
   return {
     entry: Entries.findOne(params.id),
+    image: Images.findOne({'meta.entryId': params.id}, {'meta.uxType': 'logo'}),
   };
 }, Entry);

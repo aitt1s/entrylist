@@ -45,7 +45,6 @@ class CreateEntry extends Component {
     }
 
     Meteor.call('entries.insert', name, text, area, mainContent, (err) => {
-      $("#createForm").validate();
       if(err) {
         Bert.alert({
           title: 'Error',
