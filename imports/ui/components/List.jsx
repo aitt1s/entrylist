@@ -8,18 +8,28 @@ class List extends Component {
     super();
     this.state = {
       filters: [],
+      filtersBus: [],
     };
   }
 
   filterThis() {
-    let filterparams = this.props.filters;
-    if(filterparams.length == 0) {
-      entries = Entries.find({}).fetch();
-    }
-    else {
-    entries = Entries.find({area: {$elemMatch: {muncode: {"$in": this.props.filters}}}}).fetch();
-    }
-    return entries;
+      const props = this.props;
+
+      if(props.filters.length == 0 && props.filtersBus.length == 0) {
+        return Entries.find();
+      }
+
+      if(props.filtersBus.length == 0) {
+        return Entries.find({"area.muncode": {$in: props.filters}});
+      }
+
+      if(props.filters.length == 0) {
+        return Entries.find({"bus.bcode": {$in: props.filtersBus}});
+      }
+
+      else {
+        return Entries.find({"bus.bcode": {$in: props.filtersBus}, 'area.muncode': {$in: props.filters}});
+      }
   }
 
   renderEntries() {
@@ -30,13 +40,8 @@ class List extends Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="row list-row">
         <div className="col-xs-12">
-          <div className="page-header result-area">
-            <h3>Results <small>or would you like to <a href="#">explore</a>?</small></h3>
-          </div>
-        </div>
-        <div className="col-xs-9">
           {this.renderEntries()}
         </div>
       </div>
@@ -49,7 +54,7 @@ List.propTypes = {
 };
 
 export default ListContainer = createContainer(() => {
-  Meteor.subscribe('entries');
+  Meteor.subscribe('entries.published');
   return {
     entries: Entries.find({}).fetch(),
   };

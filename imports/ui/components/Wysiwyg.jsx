@@ -5,12 +5,17 @@ import {Editor, EditorState, ContentState, RichUtils, convertToRaw, convertFromR
 export default class Wysiwyg extends Component {
     constructor(props) {
       super(props);
-      if(this.props.mainContent) {
-        const {mainContent} = this.props;
-        const contentState = convertFromRaw(mainContent);
-        const editorState = EditorState.createWithContent(contentState);
-        this.state = { editorState };
-        this.logState;
+      if(this.props.hasOwnProperty("mainContent") && typeof this.props.mainContent !== "undefined" ) {
+        if (this.props.mainContent.hasOwnProperty("blocks")) {
+          const {mainContent} = this.props;
+          const contentState = convertFromRaw(mainContent);
+          const editorState = EditorState.createWithContent(contentState);
+          this.state = { editorState };
+          this.logState;
+        }
+        else {
+          this.state = {editorState: EditorState.createEmpty()};
+        }
       }
       else {
         this.state = {editorState: EditorState.createEmpty()};
@@ -151,7 +156,7 @@ export default class Wysiwyg extends Component {
     {label: 'H2', style: 'header-two', icon: ""},
     {label: 'H3', style: 'header-three', icon: ""},
     {label: 'H4', style: 'header-four', icon: ""},
-    {label: 'Blockquote', style: 'blockquote', icon: "fa fa-quote-right"},
+    {label: 'Quote', style: 'blockquote', icon: "fa fa-quote-right"},
     {label: 'UL', style: 'unordered-list-item', icon: "fa fa-list-ul"},
     {label: 'OL', style: 'ordered-list-item', icon: "fa fa-list-ol"},
   ];

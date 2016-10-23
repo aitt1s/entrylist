@@ -27,7 +27,6 @@ class Logged extends React.Component {
           style: 'growl-top-right',
           icon: 'fa-hand-peace-o'
         });
-        browserHistory.push('/');
       }
     });
   }
@@ -42,6 +41,7 @@ class Logged extends React.Component {
   render() {
     return (
       <ul className="nav navbar-nav navbar-right">
+        <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/admin">Admin</Link></li>
         <li><a onClick={ this.logOut } >Logout</a></li>
         <li><a href="#">{this.email()}</a></li>

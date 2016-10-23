@@ -1,6 +1,9 @@
 //imports/startup/client/routes.js
 import React from 'react';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Entries }  from '../../api/Entries.js';
+import { Meteor } from 'meteor/meteor';
+
 
 // route components
 import MainLayout from '../../ui/containers/MainLayout.jsx'
@@ -16,15 +19,12 @@ import Dashboard from '../../admin/Dashboard.jsx';
 
 
 // route pages
-import About from '../../ui/pages/About.jsx'
+import Calendar from '../../ui/pages/Calendar.jsx'
 import CreateEntry from '../../ui/pages/CreateEntry.jsx'
 import Login from '../../ui/pages/Login.jsx'
 import Register from '../../ui/pages/Register.jsx'
 import Entry from '../../ui/pages/Entry.jsx'
 import UserDash from '../../ui/pages/UserDash.jsx'
-
-
-
 
 // Not found
 import NotFound from '../../ui/pages/NotFound.jsx'
@@ -60,7 +60,7 @@ export const renderRoutes = () => (
 			<IndexRoute component={ Home }></IndexRoute>
 			<Route path="e" component={ Home } ></Route>
 			<Route path="/e/:id" component={Entry} ></Route>
-			<Route path="about" component={ About } ></Route>
+			<Route path="calendar" component={ Calendar } ></Route>
 			<Route path="create" component={ CreateEntry } onEnter={ isNotLoggedIn }></Route>
       <Route path="dashboard" component={ UserDash } onEnter={ isNotLoggedIn }></Route>
       <Route path="admin" name="Dashboard" component={ AdminLayout }>

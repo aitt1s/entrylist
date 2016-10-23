@@ -9,6 +9,8 @@ export default class Home extends Component {
     this.state = {
       searchFilters: [],
       filterNumbers: [],
+      searchFiltersBus: [],
+      filterNumbersBus: [],
     };
   }
 
@@ -17,6 +19,26 @@ export default class Home extends Component {
       searchFilters: val
     }, function() {
       this.getFilters();
+    });
+  }
+
+  getSearchFiltersBus(val) {
+    this.setState({
+      searchFiltersBus: val
+    }, function() {
+      this.getFiltersBus();
+    });
+  }
+
+  getFiltersBus() {
+    this.setState({
+      filterNumbersBus: []
+    }, function() {
+      return this.state.searchFiltersBus.map((filter) => (
+        this.setState({
+          filterNumbersBus: this.state.filterNumbersBus.concat([filter.bcode])
+        })
+      ));
     });
   }
 
@@ -34,9 +56,13 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="container">
-        <SearchHome getSearchFilters={this.getSearchFilters.bind(this)} />
-        <List filters={this.state.filterNumbers}
+      <div className="container data-container">
+        <SearchHome
+        getSearchFilters={this.getSearchFilters.bind(this)}
+        getSearchFiltersBus={this.getSearchFiltersBus.bind(this)} />
+        <List
+        filters={this.state.filterNumbers}
+        filtersBus={this.state.filterNumbersBus}
         />
       </div>
     );

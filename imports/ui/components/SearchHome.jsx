@@ -10,6 +10,7 @@ export default class SearchHome extends Component {
     super();
     this.state = {
       addedSuggestions: [],
+      addedBusses: [],
     };
   }
 
@@ -21,6 +22,13 @@ export default class SearchHome extends Component {
     });
   }
 
+  onUpdateBus(val){
+    this.setState({
+      addedBusses: this.state.addedBusses.concat([val])
+    }, function() {
+      this.props.getSearchFiltersBus(this.state.addedBusses);
+    });
+  }
 
   removeLabel(id){
     var array = this.state.addedSuggestions.filter(function(item) {
@@ -34,11 +42,34 @@ export default class SearchHome extends Component {
     });
   }
 
+  removeLabelBus(id){
+    var array = this.state.addedBusses.filter(function(item) {
+      return item._id.toString() !== id
+    });
+
+    this.setState({
+      addedBusses: array
+    }, function() {
+      this.props.getSearchFiltersBus(this.state.addedBusses);
+    });
+  }
+
   renderAdded() {
     return this.state.addedSuggestions.map((sug) => (
       <div key={sug._id} className="place-label label label-primary">
         {sug.mun}
         <span className="pull-right-container remove-label" onClick={this.removeLabel.bind(this, sug._id.toString())}>
+          <i className="fa fa-times"></i>
+        </span>
+      </div>
+    ));
+  }
+
+  renderAddedBusses() {
+    return this.state.addedBusses.map((sug) => (
+      <div key={sug._id} className="place-label label label-info">
+        {sug.bname}
+        <span className="pull-right-container remove-label" onClick={this.removeLabelBus.bind(this, sug._id.toString())}>
           <i className="fa fa-times"></i>
         </span>
       </div>
@@ -55,14 +86,12 @@ export default class SearchHome extends Component {
         <div className="col-xs-12 searchdiv">
           <form className="form-inline" onChange={this.onChange}>
             <div className="form-group main-search">
-              <Busses />
+              <Busses onUpdateBus={this.onUpdateBus.bind(this)}/>
             </div>
             <div className="form-group main-search">
               <AreaComp onUpdate={this.onUpdate.bind(this)} />
              </div>
-             <div className="form-group main-search">
-              <input type="text" className="form-control" placeholder="Vapaa haku" />
-            </div>
+
             <div className="more-options main-search">
               <a className="" data-toggle="collapse" href="#moreSettings" id="link"><small>More options</small></a>
             </div>
@@ -95,9 +124,9 @@ export default class SearchHome extends Component {
             </div>
           </form>
         </div>
-        <div className="col-xs-12">
-          <div className="form-group search-home-area">
-            {this.renderAdded()}
+        <div className="col-xs-12 form-group">
+          <div className="search-home-area">
+            {this.renderAddedBusses()}{this.renderAdded()}
           </div>
         </div>
       </div>

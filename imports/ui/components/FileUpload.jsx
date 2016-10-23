@@ -3,7 +3,7 @@ import React from 'react';
 import {Meteor} from 'meteor/meteor';
 import IndividualFile from './FileIndividualFile.jsx';
 import {_} from 'meteor/underscore';
-import Images from '../../api/Images.js';
+import SectionImages from '../../api/SectionImages.js';
 
 const FileUploadComponent = React.createClass({
   mixins: [ReactMeteorData],
@@ -17,10 +17,10 @@ const FileUploadComponent = React.createClass({
   },
 
   getMeteorData() {
-    var handle = Meteor.subscribe('images');
+    var handle = Meteor.subscribe('sectionimages');
     return {
       docsReadyYet: handle.ready(),
-      docs: Images.find().fetch() // Collection is Images
+      docs: SectionImages.find().fetch() // Collection is Images
     };
   },
 
@@ -35,19 +35,12 @@ const FileUploadComponent = React.createClass({
       // there was multiple files selected
       var file = e.currentTarget.files[0];
 
-      if (! this.userId) {
-        throw new Meteor.Error('not-authorized');
-      }
-
       if (file) {
-        let uploadInstance = Images.insert({
+        let uploadInstance = SectionImages.insert({
           file: file,
           meta: {
             locator: self.props.fileLocator,
-            userId: Meteor.userId() // Optional, used to check on server for file tampering
           },
-          streams: 'dynamic',
-          chunkSize: 'dynamic',
           allowWebWorkers: true // If you see issues with uploads, change this to false
         }, false);
 
@@ -130,7 +123,7 @@ const FileUploadComponent = React.createClass({
       let showit = fileCursors.map((aFile, key) => {
         // console.log('A file: ', aFile.link(), aFile.get('name'));
 
-        let link = Images.findOne({_id: aFile._id}).link();  //The "view/download" link
+        let link = SectionImages.findOne({_id: aFile._id}).link();  //The "view/download" link
 
         // Send out components that show details of each file
         return <div key={'file' + key}>

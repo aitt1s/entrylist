@@ -1,12 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import Images from '../../api/Images.js';
 
 export default class SingleEntry extends Component {
+
+  getImage() {
+    Meteor.subscribe('images');
+    image = Images.findOne({'meta.entryId': this.props.entry._id});
+    return (typeof image !== "undefined" ? image.link() : "");
+  }
 
   renderAreas(areas) {
     return areas.map((area) => (
       <div key={area._id} className="place-label-list label label-primary">
-        {area.mun} <i className="fa fa-check-circle" aria-hidden="true"></i>
+        {area.mun}
+      </div>
+    ));
+  }
+
+  renderBusses(bus) {
+    return bus.map((bus) => (
+      <div key={bus._id} className="place-label-list label label-info">
+        {bus.bname}
       </div>
     ));
   }
@@ -14,18 +29,22 @@ export default class SingleEntry extends Component {
   render() {
     return (
       <div className="single-entry row">
-        <div className="col-xs-10">
-          <h3>
+        <div className="col-sm-2">
+          <img src={this.getImage()} className="img-responsive" />
+        </div>
+        <div className="col-sm-10">
+          <h4>
             <Link to={`e/${this.props.entry._id}`}>
               {this.props.entry.name}
             </Link>
-          </h3>
+          </h4>
+          <div className="label-area">
+            {this.renderBusses(this.props.entry.bus)}
+            {this.renderAreas(this.props.entry.area)}
+          </div>
           <p>
           {this.props.entry.text}
           </p>
-        </div>
-        <div className="col-xs-2 label-area">
-          {this.renderAreas(this.props.entry.area)}
         </div>
       </div>
     );

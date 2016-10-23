@@ -25,7 +25,7 @@ const FileUploadComponent = React.createClass({
   },
 
   deleteImage(id) {
-    console.log("this");
+    console.log(id);
     Images.remove(id);
   },
 
@@ -122,7 +122,6 @@ const FileUploadComponent = React.createClass({
 
   renderLogo() {
     const logo = Images.findOne({'meta.entryId': this.props.entryId}, {'meta.uxType': 'logo'});
-    console.log(logo);
     if(typeof logo !== "undefined") {
       return <img src={logo.link()} className="img-responsive" />
     }
@@ -154,29 +153,19 @@ const FileUploadComponent = React.createClass({
   render() {
     if (this.data.docsReadyYet) {
       'use strict';
-
+      const logo = Images.findOne({'meta.entryId': this.props.entryId}, {'meta.uxType': 'logo'});
       let fileCursors = this.data.docs;
-      return <div>
-        <div className="row">
-          <div className="col-md-12">
-            <input type="file" id="fileinput" disabled={this.state.inProgress} ref="fileinput"
-                 onChange={this.uploadIt}/>
-          </div>
-        </div>
-
-        <div className="row m-t-sm m-b-sm">
-          <div className="col-md-6">
-
-            {this.showUploads()}
-
-          </div>
-          <div className="col-md-6">
-
-            {this.renderLogo()}
-
-          </div>
-        </div>
-      </div>
+      return <div className="logo-input-wrapper">
+              <div className="hide-overflow">
+                <input type="file" className="logo-input" id="fileinput" disabled={this.state.inProgress} ref="fileinput"
+                  onChange={this.uploadIt}/>
+                 </div>
+                 { typeof logo !== "undefined" ?
+                 <span className="btn btn-success btn-xs delete-logo" onClick={this.deleteImage.bind(this, logo._id)}>
+                  <i className="fa fa-times" aria-hidden="true"></i>
+                </span>
+                 : "" }
+              </div>
     }
     else return <div></div>
   }

@@ -22,6 +22,7 @@ class CreateEntry extends Component {
     const name = ReactDOM.findDOMNode(this.refs.nameInput).value.trim();
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
     const area = this.state.addedSuggestions;
+    const bus = this.state.addedBusses;
     const mainContent = this.state.editorContent;
 
     if(name.length == 0 || text.length == 0 ) {
@@ -44,7 +45,7 @@ class CreateEntry extends Component {
         });
     }
 
-    Meteor.call('entries.insert', name, text, area, mainContent, (err) => {
+    Meteor.call('entries.insert', name, text, bus, area, mainContent, (err) => {
       if(err) {
         Bert.alert({
           title: 'Error',
@@ -155,14 +156,15 @@ class CreateEntry extends Component {
               placeholder="Description text"
               />
           </div>
-          <div className="form-group">
-            {this.renderAdded()}
-          </div>
+
           <div className="form-group">
             {this.renderAddedBusses()}
           </div>
           <div className="form-group">
             <Busses onUpdateBus={this.onUpdateBus.bind(this)} />
+          </div>
+          <div className="form-group">
+            {this.renderAdded()}
           </div>
           <div className="form-group">
             <AreaComp onUpdate={this.onUpdate.bind(this)} />

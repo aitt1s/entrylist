@@ -1,7 +1,5 @@
 body {
-  -webkit-font-smoothing: antialiased;
   font-family: 'Noto Sans', sans-serif;
-  margin-bottom: 80px;
 }
 
 .icon-box-wrapper {
@@ -48,6 +46,10 @@ body {
   max-height: 100px;
   z-index: 1030;
   background-color: #FFF;
+}
+
+.data-container {
+  margin-bottom: 60px;
 }
 
 .adminlayout {
@@ -316,7 +318,7 @@ body {
 }
 
 .place-label {
-  margin: 3px;
+  margin: 3px 3px 3px 0px;
   font-size: 14px;
 }
 
@@ -392,6 +394,8 @@ body {
 
 .single-entry {
   border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
 }
 
 .place-label-list {
@@ -400,7 +404,8 @@ body {
 }
 
 .label-area {
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .main-search {
@@ -445,6 +450,7 @@ body {
 .dashboard-control-buttons {
   display: inline-block;
   margin-right: 10px;
+  margin-bottom: 7px;
 }
 
 .dash-area {
@@ -529,8 +535,7 @@ body {
 }
 
 .navbar-collapse {
-  background-color: #FFF;
-  border-bottom: 1px solid #eee;
+
 }
 
 .footer-distributed p.footer-links a {
@@ -570,4 +575,214 @@ body {
 .register-link {
   font-size: 18px;
   font-weight: bold;
+}
+
+.btn-handle {
+  margin-right: 6px;
+}
+
+.logo-input::-webkit-file-upload-button {
+  display: none;
+  width: 83px;
+  overflow: hidden;
+}
+
+.logo-input::before {
+  content: 'Update logo';
+  display: inline-block;
+  color: #FFF;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 4px 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #43ac6a;
+  border-color: #3c9a5f;
+}
+.logo-input:hover::before {
+  color: #ffffff;
+  background-color: #358753;
+  border-color: #2b6e44;
+}
+.logo-input:active::before {
+  color: #ffffff;
+  background-color: #358753;
+  border-color: #2b6e44;
+}
+
+.logo-input:active::focus, .logo-input:active::active {
+  color: #ffffff;
+  outline: none;
+  background-color: #358753;
+  border-color: #2b6e44;
+  width: 83px;
+  overflow: hidden;
+}
+
+.logo-input-wrapper {
+  overflow: hidden;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+}
+
+.hide-overflow {
+  display: inline-block;
+  width: 83px;
+  float: left;
+  overflow: hidden;
+}
+
+.delete-logo {
+  float: left;
+}
+
+.img-responsive.editing {
+  border: 1px dotted rgb(111, 111, 111);
+}
+
+.strong-area {
+  margin-left: 6px;
+}
+
+.list-row {
+
+}
+
+.info-container {
+  margin-bottom: 30px;
+}
+
+.add-section-wrapper {
+  margin-top: 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.public-DraftEditor-content {
+  color: #666;
+  line-height: 1.5;
+}
+.create-section {
+  float: left;
+  margin-right: 6px;
+  margin-top: 6px;
+}
+
+.create-section-wrapper {
+  display: inline-block;
+}
+
+.section-text {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.entry-container {
+  position: relative;
+}
+
+.single-section {
+  height: 500px;
+}
+
+.affix-wrapper {
+  max-width: 1170px;
+  width: 100%;
+  margin-top: -65px;
+  transition: top 300ms ease-in-out;
+/*  -webkit-transition: top 1s ease-in-out;
+  -moz-transition: top 1s ease-in-out;
+  -o-transition: top 1s ease-in-out;
+*/
+}
+
+.affix {
+  top: 0;
+  z-index: 2;
+  margin-top: 0px;
+  transition: margin-top 300ms ease-in-out;
+}
+
+.anchor {
+  display: inline-block;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#navRow {
+  padding-top: 66px;
+}
+
+.section-header {
+  margin-top: 50px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+  .affix-wrapper {
+    max-width: 1170px;
+    left: inherit;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  .affix-wrapper {
+    max-width: 970px;
+    left: inherit;
+  }
+}
+
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  .affix-wrapper {
+    max-width: 750px;
+    left: inherit;
+  }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+  .affix-wrapper {
+    max-width: 100%;
+    left: 0;
+  }
+}
+
+@media only screen and (min-width : 320px) {
+  .affix-wrapper {
+    max-width: 100%;
+    left: 0;
+  }
+}
+
+.brand-image {
+  height: 36px;
+  margin-top: -8px;
+  border-radius: 4px;
+  display: inline;
+  float: left;
+}
+
+.navbar-text {
+  display: inline-block;
+  margin: 0px 0px 0px 5px;
 }

@@ -79,7 +79,7 @@ export default class DashEntry extends Component {
           : "" }
           <div className="row">
             <div className="col-xs-12">
-              <a className="btn btn-primary btn-sm" onClick={this.onClick.bind(this)}>
+              <a className="btn btn-primary btn-xs btn-handle" onClick={this.onClick.bind(this)}>
                 <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Edit entry
               </a>
               <p className="edit-text dashboard-control-buttons">Edit contents of the entry</p>
@@ -88,10 +88,10 @@ export default class DashEntry extends Component {
           <div className="row">
             <div className="col-xs-12">
             {this.props.entry.published ?
-              <a className="btn btn-success btn-sm" onClick={this.publishEntry.bind(this)}>
+              <a className="btn btn-success btn-xs btn-handle" onClick={this.publishEntry.bind(this)}>
                 <i className="fa fa-play" aria-hidden="true"></i> Published
               </a> :
-              <a className="btn btn-warning btn-sm" onClick={this.publishEntry.bind(this)}>
+              <a className="btn btn-warning btn-xs btn-handle" onClick={this.publishEntry.bind(this)}>
                 <i className="fa fa-stop" aria-hidden="true"></i> Not published
               </a>}
               <p className="edit-text dashboard-control-buttons">
@@ -101,8 +101,8 @@ export default class DashEntry extends Component {
           </div>
           <div className="row">
             <div className="col-xs-12">
-              <a className="btn btn-danger btn-sm" data-toggle="modal" data-target="#removeModal" >
-              <i className="fa fa-trash" aria-hidden="true"></i> Remove
+              <a className="btn btn-danger btn-xs btn-handle" data-toggle="modal" data-target="#removeModal" >
+              <i className="fa fa-times" aria-hidden="true"></i> Remove
               </a>
               <p className="edit-text dashboard-control-buttons">Remove the entry :(</p>
                 <div className="modal fade" id="removeModal" tabIndex="-1" role="dialog">

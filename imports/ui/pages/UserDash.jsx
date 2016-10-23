@@ -36,7 +36,7 @@ class UserDash extends Component {
   createNew() {
     return (
       <div className="new-button">
-        <Link to="/create"><div className="btn btn-success btn-lg">Create new!</div></Link>
+        <Link to="/create"><div className="btn btn-success">Create new!</div></Link>
       </div>
     )
   }
@@ -59,9 +59,8 @@ class UserDash extends Component {
   }
 
   render() {
-    console.log(this.props.entries.length);
     return (
-      <div className="container">
+      <div className="container data-container">
         <div className="row">
           <div className="col-xs-12">
             <div className="page-header result-area">

@@ -9,6 +9,9 @@ if (Meteor.isServer) {
   Meteor.publish('entries', function entriesPublication() {
     return Entries.find();
   });
+  Meteor.publish('entries.published', function entriesPublication() {
+    return Entries.find({'published':true});
+  });
   Meteor.publish('users', function usersPublication() {
     return Meteor.users.find();
   });
@@ -23,7 +26,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'entries.insert'(name, text, area, mainContent) {
+  'entries.insert'(name, text, bus, area, mainContent) {
     check(name, String);
     check(text, String);
 
@@ -37,6 +40,7 @@ Meteor.methods({
       text,
       createdAt: new Date(),
       area,
+      bus,
       mainContent,
       owner: this.userId,
       published: false
@@ -50,13 +54,40 @@ Meteor.methods({
     return true;
   },
 
+  'section.remove'(entryId, sectionId) {
+    check(entryId, String);
+    Entries.update(entryId, {
+      $pull: {
+        sections: { _id: sectionId }
+      }
+    });
+    return true;
+  },
+
   'entries.updatePublication'(entryId, published) {
     Entries.update(entryId, {
       $set: { published: published },
     });
   },
 
-  'entries.update'(entryId, name, text, area, mainContent) {
+  'entries.addSection'(entryId, section) {
+    Entries.update(entryId, {
+      $addToSet: { sections: section },
+    });
+  },
+
+  'entries.updateSection'(entryId, sectionId, section) {
+    Entries.update(
+        { "_id": entryId, "sections._id": sectionId },
+        {
+            "$set": {
+                'sections.$.content': section
+            }
+        }
+    )
+  },
+
+  'entries.update'(entryId, name, text, bus, area, mainContent) {
     check(entryId, String);
     check(name, String);
     check(text, String);
@@ -71,6 +102,7 @@ Meteor.methods({
         $set: {
           "name": name,
           "text": text,
+          "bus": bus,
           "area": area,
           "editedAt": new Date(),
         }
@@ -85,6 +117,7 @@ Meteor.methods({
         $set: {
           "name": name,
           "text": text,
+          "bus": bus,
           "area": area,
           "mainContent": mainContent,
           "editedAt": new Date(),
