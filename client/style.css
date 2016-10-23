@@ -549,6 +549,7 @@ body {
 .mobile {
   height: 50px;
   position: fixed;
+  z-index: 2;
   bottom: 0;
   padding: 5px;
 }
@@ -785,4 +786,8 @@ body {
 .navbar-text {
   display: inline-block;
   margin: 0px 0px 0px 5px;
+}
+
+#calendar {
+  margin-bottom: 60px;
 }
