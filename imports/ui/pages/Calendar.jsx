@@ -1,138 +1,279 @@
 import React, { Component } from 'react';
+import { Entries } from '../../api/Entries.js';
+import EventModal from '../components/calendar/EventModal.jsx'
+import { createContainer } from 'meteor/react-meteor-data';
+import Loading from '../components/Loading.jsx';
+import Events from './Events.jsx'
 
-export default class Calendar extends Component {
-  render() {
-    return (
-      <div className="container">
-        <button id="delete">Test</button>
-        <div id="calendar"></div>
-        <div className="modal fade" id="calEventModal" tabIndex="-1" role="dialog">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 className="modal-title">Modal title</h4>
-              </div>
-              <div className="modal-body">
-                <p>One fine body&hellip;</p>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+class Calendar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      eventId: 0,
+      entryId: "",
+      entryName: "",
+      title: "",
+      selected: "",
+      event: {},
+      edit: false,
+      create: false,
+      start: {},
+      end: {},
+      belongsTo: 0,
+    }
   }
-  componentDidMount() {
+
+  modalEditData(id, title, start, end, belongsTo) {
+    this.setState({
+      eventId: id,
+      title: title,
+      selected: belongsTo,
+      edit: true,
+      start: start,
+      end: end,
+      belongsTo: belongsTo
+    }, function() {
+
+    })
+  }
+
+  modalCreateData(start, end, selected) {
+    this.setState({
+      start: start,
+      end: end,
+      create: true,
+    })
+  }
+
+
+  handleChangeStart(event) {
+    this.setState({
+      start: event.target.value
+    }, function() {
+
+    });
+  }
+
+  handleChangeEnd(event) {
+    this.setState({
+      end: event.target.value
+    }, function() {
+
+    });
+  }
+
+  handleChangeTitle(event) {
+    this.setState({
+      title: event.target.value
+    }, function() {
+
+    });
+  }
+
+  handleChangeSelect(e) {
+    e.preventDefault();
+    this.setState({
+      selected: e.target.value,
+    }, function() {
+    });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const title = this.state.title.trim();
+    const start = this.state.start;
+    const end = this.state.end;
+    const selected = this.state.selected;
+    this.createEvent(title, start, end, selected);
+  }
+
+  handleDelete(e) {
+    e.preventDefault();
+    console.log(this.state.selected, this.state.eventId);
+    Meteor.call('event.remove', this.state.selected, this.state.eventId, (err) => {
+      if(err) {
+        Bert.alert({
+          title: 'Error',
+          message: err.reason,
+          type: 'danger',
+          style: 'growl-top-right',
+          icon: 'fa-bell'
+        });
+      }
+      else {
+        Bert.alert({
+          title: 'Even deleted',
+          message: 'Now, make another!',
+          type: 'danger',
+          style: 'growl-top-right',
+          icon: 'fa-bell'
+        });
+      }
+    });
+    $('#calendar').fullCalendar('removeEvents', e.target.id);
+    this.resetStates();
+    $('#calEventModal').modal('hide')
+  }
+
+  createEvent(title, start, end, selected) {
+    if(this.state.create) {
+      var eventData;
+      if (title) {
+        eventData = {
+          _id: new Meteor.Collection.ObjectID().valueOf(),
+          title: title,
+          start: moment(start).format("YYYY-MM-DD"),
+          end: moment(end).format("YYYY-MM-DD"),
+          belongsTo: selected,
+        };
+      }
+      Meteor.call('entries.insert.event', selected, eventData, (err) => {
+        if(err) {
+          Bert.alert({
+            title: 'Error',
+            message: err.reason,
+            type: 'danger',
+            style: 'growl-top-right',
+            icon: 'fa-bell'
+          });
+        }
+        else {
+          Bert.alert({
+            title: 'Event created!',
+            message: 'Good',
+            type: 'success',
+            style: 'growl-top-right',
+            icon: 'fa-check'
+          });
+        }
+      });
+      $('#calendar').fullCalendar('renderEvent', eventData, true);
+    }
+
+    if(this.state.edit)  {
+
+      if (title) {
+        const calEvent = {
+          _id: this.state.eventId,
+          title: title,
+          start: moment(start).format("YYYY-MM-DD"),
+          end: moment(end).format("YYYY-MM-DD"),
+          belongsTo: selected
+        }
+        Meteor.call('entries.updateEvent', selected, calEvent._id, calEvent);
+        console.log(calEvent);
+
+      }
+    }
+    this.resetStates();
+    $('#calEventModal').modal('hide')
+  }
+
+  resetStates() {
+    this.setState({
+      eventId: "",
+      title: "",
+      belongsTo: "",
+      create: false,
+      edit: false,
+      start: {},
+      end: {},
+    })
+  }
+
+  mapEntries() {
+    return this.props.entries.map((entry) => (
+      entry.events
+    ));
+  }
+
+  renderCalendar() {
+    const eventSources = [];
+    var self=this;
+    if(!this.props.loading) {
+      let mappedEntries = this.mapEntries();
+
+      for(i=0; i < mappedEntries.length; i++) {
+        let obj = {"events": mappedEntries[i]};
+        eventSources.push(obj);
+      }
+    }
+
     $('#calendar').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: ''
-			},
-      contentHeight: "auto",
-      eventClick: function(calEvent, jsEvent, view) {
-        $('#calEventModal').modal();
-        console.log('Event: ' + calEvent.title);
-        console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-        console.log('View: ' + view.name);
-        console.log(calEvent.id);
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: ''
       },
-      eventSources: [{
-        events: [
-            {
-                id     : 0,
-                title  : 'event1',
-                start  : '2016-10-01'
-            },
-            {
-                id     : 1,
-                title  : 'event2',
-                start  : '2016-10-05',
-                end    : '2016-10-07'
-            },
-            {
-                id     : 2,
-                title  : 'event3',
-                start  : '2016-10-09T12:30:00',
-                allDay : false // will make the time show
-            }
-        ]
-      }],
-			editable: true,
+      eventSources: eventSources,
+      timezone : 'local',
+      contentHeight: "auto",
+      eventClick: function(calEvent) {
+        $('#calEventModal').modal();
+        self.modalEditData(calEvent._id, calEvent.title, calEvent.start, calEvent.end, calEvent.belongsTo);
+        console.log(calEvent);
+      },
+      editable: true,
       selectable: true,
       select: function(start, end) {
-        var title = prompt('Event Title:');
-        var eventData;
-        if (title) {
-          eventData = {
-            title: title,
-            start: start,
-            end: end
-          };
-          $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-        }
+        $('#calEventModal').modal();
+        self.modalCreateData(start, end);
         $('#calendar').fullCalendar('unselect');
       },
 
-			droppable: true, // this allows things to be dropped onto the calendar
-			drop: function() {
-				// is the "remove after drop" checkbox checked?
-				if ($('#drop-remove').is(':checked')) {
-					// if so, remove the element from the "Draggable Events" list
-					$(this).remove();
-				}
-			}
+      droppable: true, // this allows things to be dropped onto the calendar
+      drop: function() {
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove();
+        }
+      }
     });
-
-    $('#delete').on('click', function() {
-      $('#calendar').fullCalendar('removeEvents', 2); //Remove events with the id: 2
-    });
-
-    $('#calEventModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-      var modal = $(this)
-      modal.find('.modal-title').text('Event name!')
-    })
-
   }
-}
 
-class External extends Component {
   render() {
-    return <div id='external-events'>
-			<h4>Draggable Events</h4>
-			<div className='fc-event'>My Event 1</div>
-			<div className='fc-event'>My Event 2</div>
-			<div className='fc-event'>My Event 3</div>
-			<div className='fc-event'>My Event 4</div>
-			<div className='fc-event'>My Event 5</div>
-			<p>
-				<input type='checkbox' id='drop-remove' />
-				<label htmlFor='drop-remove'>remove after drop</label>
-			</p>
-		</div>;
+    return (
+      <div className="container">
+        <div id="calendar"></div>
+        <EventModal
+          eventId={this.state.eventId}
+          title={this.state.title}
+          start={this.state.start}
+          end={this.state.end}
+          selected={this.state.selected}
+          handleChangeStart={this.handleChangeStart.bind(this)}
+          handleChangeEnd={this.handleChangeEnd.bind(this)}
+          handleChangeTitle={this.handleChangeTitle.bind(this)}
+          handleChangeSelect={this.handleChangeSelect.bind(this)}
+          handleSubmit={this.handleSubmit.bind(this)}
+          handleDelete={this.handleDelete.bind(this)}
+          edit={this.state.edit}
+          create={this.state.create}
+          entries={this.props.entries}
+          />
+          {this.renderCalendar()}
+      </div>
+    );
   }
+
   componentDidMount() {
-		$('#external-events .fc-event').each(function() {
-
-			// store data so the calendar knows to render an event upon drop
-			$(this).data('event', {
-				title: $.trim($(this).text()), // use the element's text as the event title
-				stick: true // maintain when user navigates (see docs on the renderEvent method)
-			});
-
-			// make the event draggable using jQuery UI
-			$(this).draggable({
-				zIndex: 999,
-				revert: true,      // will cause the event to go back to its
-				revertDuration: 0  //  original position after the drag
-			});
-		});
+    var self=this;
+    $('#calEventModal').on('hidden.bs.modal', function () {
+      self.resetStates();
+    })
   }
 }
+
+export default CalendarContainer = createContainer(() => {
+
+  const subscription = Meteor.subscribe('entries.events');
+  const loading = !subscription.ready();
+  const entries = Entries.find({"owner": Meteor.userId()}).fetch()
+
+  return {
+    loading,
+    entries
+  };
+
+}, Calendar);

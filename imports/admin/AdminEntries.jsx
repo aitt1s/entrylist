@@ -15,7 +15,7 @@ class AdminEntries extends Component {
   }
 
   entryCreatedAt(entry){
-    return moment(entry).format("D.M.YYYY HH:mm:ss");;
+    return moment(entry).format("D.M.YYYY HH:mm:ss");
   }
 
   searchEmail(id) {

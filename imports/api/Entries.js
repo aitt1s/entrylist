@@ -15,6 +15,11 @@ if (Meteor.isServer) {
   Meteor.publish('users', function usersPublication() {
     return Meteor.users.find();
   });
+
+  Meteor.publish('entries.events', function entriesPublication() {
+    return Entries.find();
+  });
+
   Meteor.publish("userData", function () {
     if (this.userId) {
       return Meteor.users.find({_id: this.userId},
@@ -45,6 +50,41 @@ Meteor.methods({
       owner: this.userId,
       published: false
     });
+  },
+
+  'entries.insert.event'(entryId, eventData) {
+    check(entryId, String);
+    check(eventData, Object);
+
+    // Make sure the user is logged in before inserting a task
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    Entries.update(entryId, {
+      $addToSet: { events: eventData },
+    });
+  },
+
+  'entries.updateEvent'(entryId, eventId, event) {
+    Entries.update(
+        { "_id": entryId, "events._id": eventId },
+        {
+            "$set": {
+                'events.$': event
+            }
+        }
+    )
+  },
+
+  'event.remove'(entryId, eventId) {
+    check(entryId, String);
+    Entries.update(entryId, {
+      $pull: {
+        events: { _id: eventId }
+      }
+    });
+    return true;
   },
 
   'entries.remove'(entryId) {

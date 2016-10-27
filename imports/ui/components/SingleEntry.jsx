@@ -11,19 +11,23 @@ export default class SingleEntry extends Component {
   }
 
   renderAreas(areas) {
-    return areas.map((area) => (
-      <div key={area._id} className="place-label-list label label-primary">
-        {area.mun}
-      </div>
-    ));
+    if(typeof bus !== "undefined" ) {
+      return areas.map((area) => (
+        <div key={area._id} className="place-label-list label label-primary">
+          {area.mun}
+        </div>
+      ));
+    }
   }
 
   renderBusses(bus) {
-    return bus.map((bus) => (
-      <div key={bus._id} className="place-label-list label label-info">
-        {bus.bname}
-      </div>
-    ));
+    if(typeof bus !== "undefined" ) {
+      return bus.map((bus) => (
+        <div key={bus._id} className="place-label-list label label-info">
+          {bus.bname}
+        </div>
+      ));
+    }
   }
 
   render() {
