@@ -1,4 +1,4 @@
-# Meteor & React app #
+# Entrylist #
 
 Web&Mobile app for creating entries such as advert for small companies. Entry can be tagged from working area or business type. For the end user there are ways to search entreis based on location or business type.
 
