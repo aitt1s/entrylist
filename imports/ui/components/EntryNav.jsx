@@ -12,33 +12,35 @@ export default class EntryNav extends Component {
 
   render() {
     return (
-      <Affix className="affix-wrapper" id="affixWrap">
-          <nav className="navbar navbar-inverse" id="navEntryInside" data-spy="affix" data-offset-top="425">
-            <div className="container-fluid">
-              <div className="navbar-header">
-                <div className="navbar-brand">
-                  { typeof this.props.image !== "undefined" || this.props.edit ?
-                      <img
-                      src={ typeof this.props.image !== "undefined" ?
-                      this.props.image.link() :
-                      "http://placehold.it/200x150/ffffff/cccccc?text=Logo" }
-                      className="brand-image" />
-                  : "" }
-                  <p className="navbar-text">{this.props.name}</p>
+      <div className="row" id="navRow">
+        <Affix className="affix-wrapper" id="affixWrap">
+            <nav className="navbar navbar-inverse" id="navEntryInside" data-spy="affix" data-offset-top="425">
+              <div className="container-fluid">
+                <div className="navbar-header">
+                  <div className="navbar-brand">
+                    { typeof this.props.image !== "undefined" || this.props.edit ?
+                        <img
+                        src={ typeof this.props.image !== "undefined" ?
+                        this.props.image.link() :
+                        "http://placehold.it/200x150/ffffff/cccccc?text=Logo" }
+                        className="brand-image" />
+                    : "" }
+                    <p className="navbar-text">{this.props.name}</p>
+                  </div>
+                  <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse2">
+                    <i className="fa fa-bars"></i>
+                  </button>
                 </div>
-                <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse2">
-                  <i className="fa fa-bars"></i>
-                </button>
+                <div className="collapse navbar-collapse" id="navbar-collapse2">
+                  <ul className="nav navbar-nav">
+                    <li><a href="#">Overview</a></li>
+                    {this.renderLinks()}
+                  </ul>
+                </div>
               </div>
-              <div className="collapse navbar-collapse" id="navbar-collapse2">
-                <ul className="nav navbar-nav">
-                  <li><a href="#">Overview</a></li>
-                  {this.renderLinks()}
-                </ul>
-              </div>
-            </div>
-          </nav>
-      </Affix>
+            </nav>
+        </Affix>
+      </div>
     );
     let height = ReactDOM.findDOMNode(this.refs.affixWrap).offset().top;
     console.log(height);

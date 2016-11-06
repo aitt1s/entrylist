@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Entries } from '../../api/Entries.js';
 import SingleEntry from './SingleEntry.jsx';
+import Loading from '../components/Loading.jsx';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class List extends Component {
   constructor() {
@@ -34,7 +36,9 @@ class List extends Component {
 
   renderEntries() {
     return this.filterThis().map((entry) => (
+
       <SingleEntry key={entry._id} entry={entry} />
+
     ));
   }
 
@@ -42,7 +46,12 @@ class List extends Component {
     return (
       <div className="row list-row">
         <div className="col-xs-12">
-          {this.renderEntries()}
+          <ReactCSSTransitionGroup
+            transitionName="example"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300} >
+              { this.props.loading ? <Loading /> : this.renderEntries()}
+          </ReactCSSTransitionGroup>
         </div>
       </div>
     );
@@ -54,8 +63,10 @@ List.propTypes = {
 };
 
 export default ListContainer = createContainer(() => {
-  Meteor.subscribe('entries.published');
+  const subscription = Meteor.subscribe('entries.published');
+  const loading = !subscription.ready();
   return {
+    loading,
     entries: Entries.find({}).fetch(),
   };
 }, List);

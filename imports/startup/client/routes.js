@@ -25,6 +25,8 @@ import Login from '../../ui/pages/Login.jsx'
 import Register from '../../ui/pages/Register.jsx'
 import Entry from '../../ui/pages/Entry.jsx'
 import UserDash from '../../ui/pages/UserDash.jsx'
+import ContactList from '../../ui/pages/ContactList.jsx'
+
 
 // Not found
 import NotFound from '../../ui/pages/NotFound.jsx'
@@ -55,12 +57,13 @@ export const isNotLoggedIn = (nextState, replace) => {
 export const renderRoutes = () => (
 
 	// const routes =  Render all routes
-	<Router history={browserHistory}>
+	<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
 		<Route name="Root" path="/" component={ MainLayout }>
 			<IndexRoute component={ Home }></IndexRoute>
 			<Route path="e" component={ Home } ></Route>
 			<Route path="/e/:id" component={Entry} ></Route>
 			<Route path="calendar" component={ Calendar } ></Route>
+      <Route path="contact" component={ ContactList } ></Route>
 			<Route path="create" component={ CreateEntry } onEnter={ isNotLoggedIn }></Route>
       <Route path="dashboard" component={ UserDash } onEnter={ isNotLoggedIn }></Route>
       <Route path="admin" name="Dashboard" component={ AdminLayout }>

@@ -2,11 +2,27 @@ import React from 'react';
 import { Link } from 'react-router';
 import Logged from './nav/Logged.jsx';
 import NotLogged from './nav/NotLogged.jsx';
+import { Session } from 'meteor/session';
+import { createContainer } from 'meteor/react-meteor-data';
 
-export default class Header extends React.Component {
+
+class Header extends React.Component {
   isActive(where) {
     if(location.pathname == "/"+where ) {
       return "active";
+    }
+  }
+
+  renderContactsLink() {
+    let number = this.props.contactIds;
+    if(number !== undefined && number.length > 0) {
+      return (
+        <ul className="nav navbar-nav navbar-left">
+          <li>
+            <Link to="/contact">Contact List <span className="badge">{number.length}</span></Link>
+          </li>
+        </ul>
+      );
     }
   }
 
@@ -22,8 +38,8 @@ export default class Header extends React.Component {
               </button>
             </div>
 
-
             <div className="collapse navbar-collapse" id="navbar-collapse">
+              { this.renderContactsLink()  }
               { !! Meteor.userId() ? <Logged /> : <NotLogged /> }
             </div>
           </div>
@@ -32,3 +48,9 @@ export default class Header extends React.Component {
     );
   }
 }
+
+export default createContainer (() => {
+  return {
+    contactIds: Session.get('contactIds')
+  };
+}, Header);

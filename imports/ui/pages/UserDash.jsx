@@ -4,6 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import DashEntry from '../components/DashEntry.jsx';
 import Entry from '../pages/Entry.jsx';
 import { Link } from 'react-router';
+import Calendar from '../pages/Calendar.jsx';
 
 class UserDash extends Component {
   constructor() {
@@ -79,6 +80,14 @@ class UserDash extends Component {
                : "" }
             {this.state.editing ? "" : this.createNew()}
           </div>
+          {this.state.editing ? "" :
+            <div className="col-xs-12 calendar-wrapper">
+              <div className="page-header result-area">
+                <h3 className="dash-title">Calendar <small>plan your business</small></h3>
+              </div>
+              <Calendar />
+            </div>
+          }
         </div>
       </div>
     )

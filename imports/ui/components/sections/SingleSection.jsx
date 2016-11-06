@@ -40,7 +40,6 @@ export default class SingleSection extends Component {
   }
 
   render() {
-    console.log(this.props.section.type);
     return (
       <div className="col-xs-12 single-section" id={this.props.section.name}>
         <div className="section-header">

@@ -78,7 +78,7 @@ export default class DashEntry extends Component {
           <h4 className="dash-title"><small>Last edited {this.entryEditedAt(this.props.entry.editedAt)}</small></h4>
           : "" }
           <div className="row">
-            <div className="col-xs-12">
+            <div className="col-xs-12 edit-row">
               <a className="btn btn-primary btn-xs btn-handle" onClick={this.onClick.bind(this)}>
                 <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Edit entry
               </a>
@@ -86,7 +86,7 @@ export default class DashEntry extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-xs-12">
+            <div className="col-xs-12 edit-row">
             {this.props.entry.published ?
               <a className="btn btn-success btn-xs btn-handle" onClick={this.publishEntry.bind(this)}>
                 <i className="fa fa-play" aria-hidden="true"></i> Published
@@ -95,12 +95,12 @@ export default class DashEntry extends Component {
                 <i className="fa fa-stop" aria-hidden="true"></i> Not published
               </a>}
               <p className="edit-text dashboard-control-buttons">
-                Publish or unpublish the entry. Not published entries are not shown to the users.
+                Not published entries are not shown to the users.
               </p>
             </div>
           </div>
           <div className="row">
-            <div className="col-xs-12">
+            <div className="col-xs-12 edit-row">
               <a className="btn btn-danger btn-xs btn-handle" data-toggle="modal" data-target="#removeModal" >
               <i className="fa fa-times" aria-hidden="true"></i> Remove
               </a>

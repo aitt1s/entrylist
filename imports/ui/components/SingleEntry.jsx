@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Images from '../../api/Images.js';
+import AddToContactList from './AddToContactList.jsx';
 
 export default class SingleEntry extends Component {
 
@@ -11,7 +12,7 @@ export default class SingleEntry extends Component {
   }
 
   renderAreas(areas) {
-    if(typeof bus !== "undefined" ) {
+    if(typeof areas !== "undefined" ) {
       return areas.map((area) => (
         <div key={area._id} className="place-label-list label label-primary">
           {area.mun}
@@ -37,18 +38,20 @@ export default class SingleEntry extends Component {
           <img src={this.getImage()} className="img-responsive" />
         </div>
         <div className="col-sm-10">
-          <h4>
+          <h4 className="list-title">
             <Link to={`e/${this.props.entry._id}`}>
               {this.props.entry.name}
             </Link>
           </h4>
-          <div className="label-area">
-            {this.renderBusses(this.props.entry.bus)}
-            {this.renderAreas(this.props.entry.area)}
-          </div>
-          <p>
-          {this.props.entry.text}
-          </p>
+          <AddToContactList entryId={this.props.entry._id} size="sm" />
+          <div className="clearfix"></div>
+            <div className="label-area">
+              {this.renderBusses(this.props.entry.bus)}
+              {this.renderAreas(this.props.entry.area)}
+            </div>
+            <p className="preview-text">
+              {this.props.entry.text}
+            </p>
         </div>
       </div>
     );

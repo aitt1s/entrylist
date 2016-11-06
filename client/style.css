@@ -557,20 +557,27 @@ body {
 .mobile .footer-right {
     float: none;
     margin: 0 auto 10px;
-    max-width: 100%;
+    max-width: 270px;
 }
 
 .mobile .footer-right a {
   display: inline-block;
-  width: 45px;
+  width: 40px;
   height: 40px;
-  background-color: #33383b;
-  border-radius: 2px;
-  font-size: 20px;
+  background-color: #004d40;
+  border-radius: 20px;
+  font-size: 15px;
   color: #ffffff;
+  padding-left: 2px;
   text-align: center;
-  line-height: 42px;
-  margin-left: 40px;
+  line-height: 40px;
+  margin-left: 8px;
+  margin-right: 8px;
+  box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14),0 6px 30px 5px rgba(0,0,0,0.12),0 8px 10px -5px rgba(0,0,0,0.3);
+  }
+
+.mobile.footer-distributed {
+  background-color: transparent;
 }
 
 .register-link {
@@ -660,7 +667,7 @@ body {
 }
 
 .list-row {
-
+  transition: all 300ms ease-in-out;
 }
 
 .info-container {
@@ -676,7 +683,11 @@ body {
 
 .public-DraftEditor-content {
   color: #666;
-  line-height: 1.5;
+  line-height: 1.8;
+  font-size: 1.68rem;
+  padding-left: 15px;
+  padding-right: 15px;
+
 }
 .create-section {
   float: left;
@@ -790,4 +801,22 @@ body {
 
 #calendar {
   margin-bottom: 60px;
+}
+
+.calendar-wrapper {
+  margin-top: 40px;
+}
+
+.mobile-badge {
+  position: absolute;
+  z-index: 3;
+}
+
+.send-message-wrapper {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.contact-favourites {
+  margin-right: 10px;
 }

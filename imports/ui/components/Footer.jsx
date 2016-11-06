@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { createContainer } from 'meteor/react-meteor-data';
 
-export default class Footer extends Component {
+
+class Footer extends Component {
+
+  renderContactsIcon() {
+    let number = this.props.contactIds;
+    if(number !== undefined && number.length > 0) {
+      return (
+          <Link to="/contact"><i className="fa fa-star"></i><span className="badge mobile-badge">{number.length}</span></Link>
+      );
+    }
+  }
+
   render() {
     return (
       <div className="footerwrapper">
@@ -25,12 +37,19 @@ export default class Footer extends Component {
           <footer className="footer-distributed mobile visible-xs">
           			<div className="footer-right">
           				<Link to="/"><i className="fa fa-search"></i></Link>
-          				<Link to="/dashboard"><i className="fa fa-tachometer"></i></Link>
-          				<Link to="/create"><i className="fa fa-pencil-square-o"></i></Link>
-          				<Link to="/admin"><i className="fa fa-cog"></i></Link>
+          				{ !! Meteor.userId() ? <Link to="/dashboard"><i className="fa fa-tachometer"></i></Link> : "" }
+          				{ !! Meteor.userId() ? <Link to="/create"><i className="fa fa-pencil-square-o"></i></Link> : "" }
+          				{ !! Meteor.userId() ? <Link to="/admin"><i className="fa fa-cog"></i></Link> : "" }
+                  { !! Meteor.userId() ? "" : this.renderContactsIcon() }
           			</div>
           		</footer>
           </div>
     );
   }
 }
+
+export default createContainer (() => {
+  return {
+    contactIds: Session.get('contactIds')
+  };
+}, Footer);

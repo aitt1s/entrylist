@@ -48,7 +48,8 @@ Meteor.methods({
       bus,
       mainContent,
       owner: this.userId,
-      published: false
+      published: false,
+      checked: true
     });
   },
 
@@ -66,7 +67,7 @@ Meteor.methods({
     });
   },
 
-  'entries.updateEvent'(entryId, eventId, event) {
+  'entries.update.event'(entryId, eventId, event) {
     Entries.update(
         { "_id": entryId, "events._id": eventId },
         {
@@ -108,6 +109,13 @@ Meteor.methods({
     Entries.update(entryId, {
       $set: { published: published },
     });
+  },
+
+  'entries.setChecked'(entryId, setChecked) {
+    check(entryId, String);
+    check(setChecked, Boolean);
+
+    Entries.update(entryId, { $set: { checked: setChecked } });
   },
 
   'entries.addSection'(entryId, section) {

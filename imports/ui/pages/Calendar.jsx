@@ -9,195 +9,150 @@ class Calendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventId: 0,
-      entryId: "",
-      entryName: "",
-      title: "",
-      selected: "",
-      event: {},
       edit: false,
-      create: false,
+      _id: "",
       start: {},
       end: {},
-      belongsTo: 0,
+      title: "",
+      options: [],
+      selectedOption: "",
     }
   }
 
-  modalEditData(id, title, start, end, belongsTo) {
-    this.setState({
-      eventId: id,
-      title: title,
-      selected: belongsTo,
-      edit: true,
-      start: start,
-      end: end,
-      belongsTo: belongsTo
-    }, function() {
-
-    })
+  getOptions() {
+    return this.props.entries.map((entry) => (
+      entry._id
+    ));
   }
 
-  modalCreateData(start, end, selected) {
+  createEventClick(start, end) {
+    if(this.getOptions().length == 1) {
+      this.setState({
+        selectedOption: this.props.entries[0]._id
+      })
+    }
     this.setState({
+      _id: new Meteor.Collection.ObjectID().valueOf(),
       start: start,
       end: end,
-      create: true,
-    })
-  }
-
-
-  handleChangeStart(event) {
-    this.setState({
-      start: event.target.value
-    }, function() {
-
+      options: this.getOptions()
     });
   }
 
-  handleChangeEnd(event) {
+  updateEventClick(event) {
+    const clickedElement = event;
     this.setState({
-      end: event.target.value
-    }, function() {
-
+      edit: true,
+      _id: event._id,
+      start: event.start,
+      end: event.end,
+      title: event.title,
+      selectedOption: event.belongsTo,
+      options: this.getOptions(),
     });
   }
 
   handleChangeTitle(event) {
+    event.preventDefault();
     this.setState({
       title: event.target.value
-    }, function() {
-
     });
   }
 
-  handleChangeSelect(e) {
-    e.preventDefault();
+  handleChangeSelect(event) {
+    event.preventDefault();
     this.setState({
-      selected: e.target.value,
-    }, function() {
+      selectedOption: event.target.value
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    const title = this.state.title.trim();
-    const start = this.state.start;
-    const end = this.state.end;
-    const selected = this.state.selected;
-    this.createEvent(title, start, end, selected);
-  }
+  handleSubmit(event) {
+    event.preventDefault();
 
-  handleDelete(e) {
-    e.preventDefault();
-    console.log(this.state.selected, this.state.eventId);
-    Meteor.call('event.remove', this.state.selected, this.state.eventId, (err) => {
-      if(err) {
-        Bert.alert({
-          title: 'Error',
-          message: err.reason,
-          type: 'danger',
-          style: 'growl-top-right',
-          icon: 'fa-bell'
-        });
+    if(!this.state.edit) {
+      let newEvent = {
+        _id: this.state._id,
+        title: this.state.title,
+        start: moment(this.state.start).format("YYYY-MM-DD"),
+        end: moment(this.state.end).format("YYYY-MM-DD"),
+        belongsTo: this.state.selectedOption
       }
-      else {
-        Bert.alert({
-          title: 'Even deleted',
-          message: 'Now, make another!',
-          type: 'danger',
-          style: 'growl-top-right',
-          icon: 'fa-bell'
-        });
-      }
-    });
-    $('#calendar').fullCalendar('removeEvents', e.target.id);
-    this.resetStates();
-    $('#calEventModal').modal('hide')
-  }
-
-  createEvent(title, start, end, selected) {
-    if(this.state.create) {
-      var eventData;
-      if (title) {
-        eventData = {
-          _id: new Meteor.Collection.ObjectID().valueOf(),
-          title: title,
-          start: moment(start).format("YYYY-MM-DD"),
-          end: moment(end).format("YYYY-MM-DD"),
-          belongsTo: selected,
-        };
-      }
-      Meteor.call('entries.insert.event', selected, eventData, (err) => {
-        if(err) {
-          Bert.alert({
-            title: 'Error',
-            message: err.reason,
-            type: 'danger',
-            style: 'growl-top-right',
-            icon: 'fa-bell'
-          });
-        }
-        else {
-          Bert.alert({
-            title: 'Event created!',
-            message: 'Good',
-            type: 'success',
-            style: 'growl-top-right',
-            icon: 'fa-check'
-          });
-        }
-      });
-      $('#calendar').fullCalendar('renderEvent', eventData, true);
+      Meteor.call("entries.insert.event", this.state.selectedOption, newEvent);
+      newEvent.start = this.state.start;
+      newEvent.end = this.state.end;
+      $('#calendar').fullCalendar( 'renderEvent', newEvent, true);
     }
 
-    if(this.state.edit)  {
-
-      if (title) {
-        const calEvent = {
-          _id: this.state.eventId,
-          title: title,
-          start: moment(start).format("YYYY-MM-DD"),
-          end: moment(end).format("YYYY-MM-DD"),
-          belongsTo: selected
-        }
-        Meteor.call('entries.updateEvent', selected, calEvent._id, calEvent);
-        console.log(calEvent);
-
+    if(this.state.edit) {
+      let targetElement = $('#calendar').fullCalendar( 'clientEvents', this.state._id).shift();
+      targetElement.title = this.state.title;
+      let updatedEvent = {
+        title: this.state.title,
       }
+
+      Meteor.call("entries.update.event", this.state.selectedOption, targetElement._id,  updatedEvent);
+      $('#calendar').fullCalendar('updateEvent', targetElement);
     }
-    this.resetStates();
-    $('#calEventModal').modal('hide')
+
+    $('#calEventModal').modal('hide');
   }
 
-  resetStates() {
-    this.setState({
-      eventId: "",
-      title: "",
-      belongsTo: "",
-      create: false,
-      edit: false,
-      start: {},
-      end: {},
-    })
+  handleDelete(event) {
+    event.preventDefault();
+    let buttonId = event.target.id;
+    let buttonIdConfirm = this.state._id
+
+    if(buttonId == buttonIdConfirm) {
+      $('#calendar').fullCalendar( 'removeEvents', buttonId);
+      $('#calEventModal').modal('hide');
+    }
+    else {
+      console.log("Some error");
+    }
+  }
+
+  toggleChecked(event) {
+    entryId = event.target.id;
+    target = Entries.findOne({_id: entryId});
+    // Set the checked property to the opposite of its current value
+    Meteor.call('entries.setChecked', entryId, !target.checked);
   }
 
   mapEntries() {
     return this.props.entries.map((entry) => (
-      entry.events
+      entry.checked ? entry.events : []
     ));
   }
 
-  renderCalendar() {
-    const eventSources = [];
-    var self=this;
-    if(!this.props.loading) {
-      let mappedEntries = this.mapEntries();
+  resetStates() {
+    this.setState({
+      _id: "",
+      edit: false,
+      start: {},
+      end: {},
+      title: "",
+      options: [],
+      selectedOption: "",
+    });
+  }
 
-      for(i=0; i < mappedEntries.length; i++) {
-        let obj = {"events": mappedEntries[i]};
-        eventSources.push(obj);
-      }
+  getEventSources() {
+    if(this.props.loading) {
     }
+
+    const eventSources = [];
+    let mappedEntries = this.mapEntries();
+
+    for(i=0; i < mappedEntries.length; i++) {
+      let obj = {"id": i, "events": mappedEntries[i]};
+      eventSources.push(obj);
+    }
+
+    return eventSources;
+  }
+
+  renderCalendar() {
+    var self=this;
 
     $('#calendar').fullCalendar({
       header: {
@@ -205,19 +160,18 @@ class Calendar extends Component {
         center: 'title',
         right: ''
       },
-      eventSources: eventSources,
+      eventSources: self.getEventSources(),
       timezone : 'local',
       contentHeight: "auto",
       eventClick: function(calEvent) {
+        self.updateEventClick(calEvent);
         $('#calEventModal').modal();
-        self.modalEditData(calEvent._id, calEvent.title, calEvent.start, calEvent.end, calEvent.belongsTo);
-        console.log(calEvent);
       },
       editable: true,
       selectable: true,
       select: function(start, end) {
+        self.createEventClick(start, end)
         $('#calEventModal').modal();
-        self.modalCreateData(start, end);
         $('#calendar').fullCalendar('unselect');
       },
 
@@ -230,28 +184,44 @@ class Calendar extends Component {
         }
       }
     });
+
+
+    $('#calendar').fullCalendar( 'refetchEvents' );
+    $('#calendar').fullCalendar( 'rerenderEvents' );
+  }
+
+  renderSelectors() {
+    return this.props.entries.map((entry) => (
+      <div key={`calendarEntry-${entry._id}`} className="checkbox">
+        <label>
+          <input type="checkbox" readOnly onClick={this.toggleChecked.bind(this)} checked={entry.checked} id={entry._id} /> {entry.name}
+        </label>
+      </div>
+    ));
   }
 
   render() {
     return (
       <div className="container">
+        <div className="row">
+          <div className="entry-selector col-sm-4">
+            {this.props.loading ? <Loading /> : this.renderSelectors() }
+          </div>
+        </div>
         <div id="calendar"></div>
-        <EventModal
-          eventId={this.state.eventId}
-          title={this.state.title}
-          start={this.state.start}
-          end={this.state.end}
-          selected={this.state.selected}
-          handleChangeStart={this.handleChangeStart.bind(this)}
-          handleChangeEnd={this.handleChangeEnd.bind(this)}
-          handleChangeTitle={this.handleChangeTitle.bind(this)}
-          handleChangeSelect={this.handleChangeSelect.bind(this)}
-          handleSubmit={this.handleSubmit.bind(this)}
-          handleDelete={this.handleDelete.bind(this)}
-          edit={this.state.edit}
-          create={this.state.create}
-          entries={this.props.entries}
-          />
+          <EventModal
+                    id={this.state._id}
+                    edit={this.state.edit}
+                    start={this.state.start}
+                    end={this.state.end}
+                    title={this.state.title}
+                    options={this.state.options}
+                    selectedOption={this.state.selectedOption}
+                    handleChangeTitle={this.handleChangeTitle.bind(this)}
+                    handleChangeSelect={this.handleChangeSelect.bind(this)}
+                    handleSubmit={this.handleSubmit.bind(this)}
+                    handleDelete={this.handleDelete.bind(this)}
+            />
           {this.renderCalendar()}
       </div>
     );
@@ -261,7 +231,7 @@ class Calendar extends Component {
     var self=this;
     $('#calEventModal').on('hidden.bs.modal', function () {
       self.resetStates();
-    })
+    });
   }
 }
 

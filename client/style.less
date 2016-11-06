@@ -1,0 +1,169 @@
+@import "./variables.less";
+
+// Navbar
+.navbar-inverse {
+  background-color: @default;
+  border-color: @default;
+
+  .navbar-text {
+    color: @default-link;
+    text-transform: uppercase;
+  }
+
+  .navbar-brand {
+      color: @default-link;
+      font-size: 14px;
+      padding: 15px 15px;
+      -webkit-font-smoothing: antialiased;
+  }
+  .navbar-nav > li > a {
+      color: @default-link;
+      text-transform: uppercase;
+      font-size: 10px;
+  }
+
+  .navbar-toggle {
+    border-color: transparent;
+    color: @default-link;
+  }
+
+  .navbar-toggle:focus, .navbar-toggle:active, .navbar-toggle:hover {
+    background-color: transparent;
+  }
+
+  .navbar-collapse {
+    border-color: @default;
+  }
+}
+
+#navEntryInside {
+  border-radius: 0px;
+}
+
+// Links
+
+a {
+  color: @default;
+}
+
+// buttons && labels
+.btn, .fc-state-default, .fc button {
+  border-radius: @default-border-radius;
+  padding: 0 2rem;
+  text-transform: uppercase;
+  height: @default-height;
+  line-height: @default-height;
+  box-shadow: @default-shadow;
+}
+
+.btn-sm {
+  padding: 0 1rem;
+  height: 24px;
+  line-height: 24px;
+  box-shadow: @default-shadow;
+}
+
+.fc button {
+  color: @default-link;
+}
+
+.fc-state-default {
+  background-color: @default;
+  background-image: none;
+  text-shadow: none;
+  font-size: 14px;
+}
+
+.fc-state-default:hover {
+  background-color: @default-hover;
+}
+
+.label {
+  border-radius: @default-border-radius;
+}
+
+.label-info {
+  background-color: @default;
+}
+
+.label-primary {
+  background-color: @primary;
+}
+
+// forms
+
+.form-control {
+  border-radius: @default-border-radius;
+  box-shadow: @default-shadow;
+}
+
+// margins edit
+.edit-row {
+  margin-bottom: 3px;
+}
+
+// fa zoom
+.fa {
+  font-size: @fa-zoom;
+}
+
+//list title
+.list-title {
+  font-size: 24px;
+  display: inline-block;
+  margin-top: 0px;
+  float: left;
+}
+
+// p reading
+.preview-text {
+  color: @text-color;
+  font-size: @text-size;
+  line-height: @text-line;
+}
+
+.contact-list-button {
+  display: inline-block;
+  float: right;
+  margin-top: 2px;
+}
+
+@media only screen and (max-width : 480px) {
+  .contact-list-button {
+    float: left;
+    display: block;
+  }
+
+  .list-title {
+    display: block;
+    float: none;
+    margin-top: 10px;
+  }
+}
+
+.badge {
+  background-color: @default-hover;
+}
+
+.message-area {
+  max-width: 100%;
+  min-height: 200px;
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
