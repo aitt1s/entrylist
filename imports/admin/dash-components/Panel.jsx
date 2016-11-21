@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import Loading from '../../ui/components/Loading.jsx';
+
 
 export default class Panel extends Component {
 
@@ -15,6 +17,11 @@ export default class Panel extends Component {
           <span className="icon-number">
             { this.props.count }
           </span>
+          {this.props.loading ?
+          <span className="dash-loading">
+            <Loading />
+          </span>
+          : "" }
         </div>
       </div>
     )

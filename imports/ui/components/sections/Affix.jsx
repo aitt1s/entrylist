@@ -19,7 +19,7 @@ class Affix extends Component {
 
   handleScroll = () => {
     const affix = this.state.affix;
-    const offset = $('.content-box').offset().top;
+    const offset = $('#navRow').offset().top;
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 
     if (!affix && scrollTop >= offset) {

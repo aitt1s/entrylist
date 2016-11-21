@@ -117,12 +117,14 @@ class Entry extends Component {
   }
 
   createSectionStates() {
-    if(this.props.entry.sections !== undefined && !this.props.loading) {
-      return this.props.entry.sections.map((section, i) => (
-        this.setState({
-          [i]: section.content ? section.content : {},
-        })
-      ));
+    if(!this.props.loading) {
+      if(this.props.entry.sections !== undefined) {
+        return this.props.entry.sections.map((section, i) => (
+          this.setState({
+            [i]: section.content ? section.content : {},
+          })
+        ));
+      }
     }
   }
 

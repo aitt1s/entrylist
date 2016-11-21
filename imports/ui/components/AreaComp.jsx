@@ -93,6 +93,7 @@ class AreaComp extends Component {
           getSuggestionValue={this.getSuggestionValue}
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
+          focusFirstSuggestion={true}
           id="area"
         />
       </div>

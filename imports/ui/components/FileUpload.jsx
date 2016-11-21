@@ -132,27 +132,22 @@ const FileUploadComponent = React.createClass({
             fileUrl={link}
             fileId={aFile._id}
             fileSize={aFile.size}
+            edit={this.props.edit}
           />
         </div>
       });
 
       return <div>
-        <div className="row">
+        {this.props.edit ? <div className="row">
           <div className="col-md-12">
             <p>Upload New File:</p>
             <input type="file" id="fileinput" disabled={this.state.inProgress} ref="fileinput"
                  onChange={this.uploadIt}/>
           </div>
-        </div>
+        </div> : "" }
 
-        <div className="row m-t-sm m-b-sm">
-          <div className="col-md-6">
-
-            {this.showUploads()}
-
-          </div>
-          <div className="col-md-6">
-          </div>
+        <div className="col-md-12">
+          {this.showUploads()}
         </div>
 
         {showit}

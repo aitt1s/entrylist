@@ -67,7 +67,7 @@ export default class Register extends Component {
           <div className="form-group register-form">
             <input type="password" className="form-control" id="registerConfirmPassword" placeholder="Confirm Password" />
           </div>
-          <button type="submit" className="btn btn-default">Let's go</button>
+          <button type="submit" className="btn btn-primary btn-lg">Submit</button>
         </form>
       </div>
     );

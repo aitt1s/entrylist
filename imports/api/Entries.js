@@ -9,9 +9,15 @@ if (Meteor.isServer) {
   Meteor.publish('entries', function entriesPublication() {
     return Entries.find();
   });
+
+  Meteor.publish('entryName', function () {
+    return Entries.find({}, {fields: {'name': 1}});
+  });
+
   Meteor.publish('entries.published', function entriesPublication() {
     return Entries.find({'published':true});
   });
+
   Meteor.publish('users', function usersPublication() {
     return Meteor.users.find();
   });
@@ -20,13 +26,8 @@ if (Meteor.isServer) {
     return Entries.find();
   });
 
-  Meteor.publish("userData", function () {
-    if (this.userId) {
-      return Meteor.users.find({_id: this.userId},
-                               {fields: {'other': 1, 'things': 1}});
-    } else {
-      this.ready();
-    }
+  Meteor.publish('userData', function () {
+    return Meteor.users.find({}, {fields: {'emails.address': 1}});
   });
 }
 
@@ -47,7 +48,7 @@ Meteor.methods({
       area,
       bus,
       mainContent,
-      owner: this.userId,
+      owner: [this.userId],
       published: false,
       checked: true
     });
@@ -133,6 +134,37 @@ Meteor.methods({
             }
         }
     )
+  },
+
+  'userName'(owner) {
+    if(owner !== undefined) {
+      let email = Meteor.users.findOne({'_id': owner}).emails[0].address;
+      return email;
+    }
+  },
+
+  'addOwner'(entryId, email) {
+    const emailUser = Meteor.users.findOne({ "emails.address" : email });
+
+    if(emailUser === undefined) {
+      return "No users found, invite?";
+    }
+
+    Entries.update(entryId, {
+      $addToSet: { owner: emailUser._id},
+    });
+
+    return true;
+  },
+
+  'removeOwner'(entryId, ownerId) {
+    check(entryId, String);
+    Entries.update(entryId, {
+      $pull: {
+        owner: ownerId
+      }
+    });
+    return true;
   },
 
   'entries.update'(entryId, name, text, bus, area, mainContent) {

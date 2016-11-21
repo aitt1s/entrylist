@@ -19,7 +19,7 @@ class Header extends React.Component {
       return (
         <ul className="nav navbar-nav navbar-left">
           <li>
-            <Link to="/contact">Contact List <span className="badge">{number.length}</span></Link>
+            <Link to="/contact">Contact List <span className="badge header-badge">{number.length}</span></Link>
           </li>
         </ul>
       );
@@ -40,7 +40,7 @@ class Header extends React.Component {
 
             <div className="collapse navbar-collapse" id="navbar-collapse">
               { this.renderContactsLink()  }
-              { !! Meteor.userId() ? <Logged /> : <NotLogged /> }
+              { this.props.logged ? <Logged /> : <NotLogged /> }
             </div>
           </div>
         </nav>
@@ -50,7 +50,15 @@ class Header extends React.Component {
 }
 
 export default createContainer (() => {
+
+  let logged = false;
+
+  if(Meteor.userId()) {
+    logged = true;
+  }
+
   return {
+    logged,
     contactIds: Session.get('contactIds')
   };
 }, Header);

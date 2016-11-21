@@ -1,5 +1,58 @@
 @import "./variables.less";
 
+// core
+body {
+  background-color: @background;
+}
+
+.single-entry, .content-box, .single-section, .calendar-wrapper {
+  background-color: @background-front;
+  padding-top: @basic-padding;
+  border: 1px solid #efefef;
+  border-radius: @border-radius;
+  margin-bottom: 8px;
+  padding-bottom: @basic-padding;
+
+}
+
+.container {
+  padding-left: @padding-left;
+  padding-right: @padding-right;
+}
+
+.col-xs-1, .col-sm-1, .col-md-1,
+.col-lg-1, .col-xs-2, .col-sm-2,
+.col-md-2, .col-lg-2, .col-xs-3,
+.col-sm-3, .col-md-3, .col-lg-3,
+.col-xs-4, .col-sm-4, .col-md-4,
+.col-lg-4, .col-xs-5, .col-sm-5,
+.col-md-5, .col-lg-5, .col-xs-6,
+.col-sm-6, .col-md-6, .col-lg-6,
+.col-xs-7, .col-sm-7, .col-md-7,
+.col-lg-7, .col-xs-8, .col-sm-8,
+.col-md-8, .col-lg-8, .col-xs-9,
+.col-sm-9, .col-md-9, .col-lg-9,
+.col-xs-10, .col-sm-10, .col-md-10,
+.col-lg-10, .col-xs-11, .col-sm-11,
+.col-md-11, .col-lg-11, .col-xs-12,
+.col-sm-12, .col-md-12, .col-lg-12 {
+  padding-left: @padding-left;
+  padding-right: @padding-right;
+}
+
+.row {
+  margin-left: @margin-left;
+  margin-right: @margin-right;
+}
+
+a {
+  color: @default;
+  &:hover, &:active {
+    color: @default-hover;
+    text-decoration: none;
+  }
+}
+
 // Navbar
 .navbar-inverse {
   background-color: @default;
@@ -12,7 +65,7 @@
 
   .navbar-brand {
       color: @default-link;
-      font-size: 14px;
+      font-size: 22px;
       padding: 15px 15px;
       -webkit-font-smoothing: antialiased;
   }
@@ -56,6 +109,14 @@ a {
   box-shadow: @default-shadow;
 }
 
+button {
+  background-color: @default-button;
+  color: @default;
+  &:hover, &:active {
+    color: @default-hover;
+  }
+}
+
 .btn-sm {
   padding: 0 1rem;
   height: 24px;
@@ -95,6 +156,7 @@ a {
 .form-control {
   border-radius: @default-border-radius;
   box-shadow: @default-shadow;
+  height: @default-height;
 }
 
 // margins edit
@@ -111,7 +173,7 @@ a {
 .list-title {
   font-size: 24px;
   display: inline-block;
-  margin-top: 0px;
+  margin-top: 6px;
   float: left;
 }
 
@@ -125,7 +187,7 @@ a {
 .contact-list-button {
   display: inline-block;
   float: right;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 @media only screen and (max-width : 480px) {
@@ -142,7 +204,10 @@ a {
 }
 
 .badge {
-  background-color: @default-hover;
+  color: @default-link;
+  background-color: @default;
+  border: 1px solid @default-link;
+  padding: 2px 5px;
 }
 
 .message-area {
@@ -166,4 +231,130 @@ a {
 .example-leave.example-leave-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
+}
+
+.message-from {
+  display: inline-block;
+}
+
+.message-time {
+  font-style: italic;
+  color: #888;
+}
+
+.message-controls {
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+  .btn {
+    margin-right: 6px;
+  }
+}
+
+.header-badge {
+  position: absolute;
+  margin-top: -28px;
+  right: -6px;
+}
+
+.footer-distributed {
+  display: none;
+}
+
+.single-media {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.navbar {
+  min-height: 60px;
+  padding-top: 6px;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+  background-color: @default;
+}
+
+.remove-contact-list {
+  color: #FFF;
+  background-color: @default;
+  &:hover, &:active {
+    background-color: @default-hover;
+    color: #FFF;
+  }
+}
+
+.add-contact-list {
+  &:hover, &:active {
+    color: @default-hover;
+  }
+}
+
+.footer-distributed p.footer-links a {
+  display: inline-block;
+  line-height: 1.8;
+  text-decoration: none;
+  color: inherit;
+  margin-left: 6px;
+}
+
+.mobile {
+  height: 50px;
+  position: fixed;
+  z-index: 2;
+  bottom: 0;
+  padding: 5px;
+}
+
+.mobile .footer-right {
+    float: none;
+    margin: 0 auto 10px;
+    max-width: 270px;
+    text-align: center;
+}
+
+.mobile .footer-right a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: @default;
+  border-radius: 20px;
+  font-size: 15px;
+  color: #ffffff;
+  padding-left: 2px;
+  text-align: center;
+  line-height: 40px;
+  margin-left: 8px;
+  margin-right: 8px;
+  box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14),0 6px 30px 5px rgba(0,0,0,0.12),0 8px 10px -5px rgba(0,0,0,0.3);
+  }
+
+.navbar-toggle {
+  float: left;
+}
+
+#calendar {
+  margin-bottom: 60px;
+  padding: @basic-padding;
+}
+
+.calendar-wrapper {
+  margin-top: 40px;
+  padding: @basic-padding;
+}
+
+.small-entry {
+  padding-left: 14px;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: @border-radius;
+    border-top-right-radius: @border-radius;
+}
+
+
+.list-group-item:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: @border-radius;
+    border-bottom-left-radius: @border-radius;
 }
