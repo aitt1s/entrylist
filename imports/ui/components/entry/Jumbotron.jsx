@@ -13,6 +13,7 @@ export default class Jumbotron extends Component {
         defaultValue={name}
         placeholder="Name of the entry"
         id="nameInput"
+        onChange={this.props.handleNameChange.bind(this)}
         />
     );
   }
@@ -26,6 +27,7 @@ export default class Jumbotron extends Component {
           defaultValue={text}
           placeholder="A short description text"
           id="textInput"
+          onChange={this.props.handleTextChange.bind(this)}
           />
     );
   }

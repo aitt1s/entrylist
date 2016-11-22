@@ -4,7 +4,6 @@ import { Mongo } from 'meteor/mongo';
 
 var Images;
 Images = new FilesCollection({
-  storagePath: '/Users/juha/workspace/entrylist/data',
   downloadRoute: '/img',
   collectionName: 'Images',
 

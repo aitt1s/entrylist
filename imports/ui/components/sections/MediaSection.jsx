@@ -7,7 +7,7 @@ export default class MediaSection extends Component {
 
     return (
       <div className="wrapperi" id={this.props.section.name}>
-        <FileUploadComponent />
+        <FileUploadComponent edit={this.props.edit} />
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory} from 'react-router';
 
 export default class AddToContactList extends Component {
   constructor() {
@@ -6,6 +7,11 @@ export default class AddToContactList extends Component {
     this.state = {
       inContactList: false
     }
+  }
+
+  MoveToContacts(event) {
+    event.preventDefault();
+    browserHistory.push('/contact');
   }
 
   addToSession(event) {
@@ -40,17 +46,24 @@ export default class AddToContactList extends Component {
     if(Session.get("contactIds") !== undefined ) {
       if(Session.get("contactIds").includes(this.props.entryId)) {
         return (
-          <a className={`btn btn-danger btn-${this.props.size} contact-list-button`} onClick={this.RemoveFromSession.bind(this)} role="button">
-            Remove from contact list
-          </a>
+          <div className="btn-group contact-list-button" role="group">
+            <a className={`btn remove-contact-list btn-${this.props.size} `} onClick={this.MoveToContacts.bind(this)} role="button">
+              <i className="fa fa-check" aria-hidden="true"></i> In contact list
+            </a>
+            <a className={`btn remove-contact-list btn-${this.props.size}`} onClick={this.RemoveFromSession.bind(this)} role="button">
+              <i className="fa fa-times"></i>
+            </a>
+          </div>
         );
       }
     }
 
     return (
-      <a className={`btn btn-primary btn-${this.props.size} contact-list-button`} onClick={this.addToSession.bind(this)} role="button">
-        Add to contact list
-      </a>
+      <div className="button-group" role="group">
+        <a className={`btn add-contact-list btn-${this.props.size} contact-list-button`} onClick={this.addToSession.bind(this)}>
+          <i className="fa fa-plus" aria-hidden="true"></i> Add to contact list
+        </a>
+      </div>
     );
   }
 }

@@ -12,7 +12,7 @@ export default class SingleEntry extends Component {
   }
 
   renderAreas(areas) {
-    if(typeof areas !== "undefined" ) {
+    if(typeof areas !== "undefined" && areas) {
       return areas.map((area) => (
         <div key={area._id} className="place-label-list label label-primary">
           {area.mun}
@@ -22,7 +22,7 @@ export default class SingleEntry extends Component {
   }
 
   renderBusses(bus) {
-    if(typeof bus !== "undefined" ) {
+    if(typeof bus !== "undefined" && bus) {
       return bus.map((bus) => (
         <div key={bus._id} className="place-label-list label label-info">
           {bus.bname}

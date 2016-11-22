@@ -4,80 +4,64 @@ import SingleEntry from './SingleEntry.jsx';
 import AreaComp from './AreaComp.jsx';
 import Busses from './Busses.jsx';
 
-
-export default class SearchHome extends Component {
-  constructor() {
-    super();
-    this.state = {
-      addedSuggestions: [],
-      addedBusses: [],
-    };
-  }
+class SearchHome extends Component {
 
   onUpdate(val){
-    this.setState({
-      addedSuggestions: this.state.addedSuggestions.concat([val])
-    }, function() {
-      this.props.getSearchFilters(this.state.addedSuggestions);
-    });
+    let areas = Session.get("addedSuggestions");
+    if(areas === undefined) {
+      areas = [];
+    }
+    Session.set( "addedSuggestions", areas.concat([val]));
   }
 
   onUpdateBus(val){
-    this.setState({
-      addedBusses: this.state.addedBusses.concat([val])
-    }, function() {
-      this.props.getSearchFiltersBus(this.state.addedBusses);
-    });
+    let busses = Session.get("addedBusses");
+    if(busses === undefined) {
+      busses = [];
+    }
+    Session.set( "addedBusses", busses.concat([val]));
   }
 
   removeLabel(id){
-    var array = this.state.addedSuggestions.filter(function(item) {
+    let array = Session.get('addedSuggestions').filter(function(item) {
       return item._id.toString() !== id
     });
 
-    this.setState({
-      addedSuggestions: array
-    }, function() {
-      this.props.getSearchFilters(this.state.addedSuggestions);
-    });
+    Session.set("addedSuggestions", array);
   }
 
   removeLabelBus(id){
-    var array = this.state.addedBusses.filter(function(item) {
+    let array = Session.get('addedBusses').filter(function(item) {
       return item._id.toString() !== id
     });
 
-    this.setState({
-      addedBusses: array
-    }, function() {
-      this.props.getSearchFiltersBus(this.state.addedBusses);
-    });
+    Session.set("addedBusses", array);
   }
 
   renderAdded() {
-    return this.state.addedSuggestions.map((sug) => (
-      <div key={sug._id} className="place-label label label-primary">
-        {sug.mun}
-        <span className="pull-right-container remove-label" onClick={this.removeLabel.bind(this, sug._id.toString())}>
-          <i className="fa fa-times"></i>
-        </span>
-      </div>
-    ));
+    if(Session.get('addedSuggestions') !== undefined) {
+      return Session.get('addedSuggestions').map((sug) => (
+        <div key={sug._id} className="place-label label label-primary">
+          {sug.mun}
+          <span className="pull-right-container remove-label" onClick={this.removeLabel.bind(this, sug._id.toString())}>
+            <i className="fa fa-times"></i>
+          </span>
+        </div>
+      ));
+    }
   }
 
   renderAddedBusses() {
-    return this.state.addedBusses.map((sug) => (
-      <div key={sug._id} className="place-label label label-info">
-        {sug.bname}
-        <span className="pull-right-container remove-label" onClick={this.removeLabelBus.bind(this, sug._id.toString())}>
-          <i className="fa fa-times"></i>
-        </span>
-      </div>
-    ));
-  }
-
-  onChange() {
-
+    if(Session.get('addedBusses') !== undefined) {
+      return Session.get('addedBusses').map((sug) => (
+        <div key={sug._id} className="place-label label label-info">
+          {sug.bname}
+          <span className="pull-right-container remove-label" onClick={this.removeLabelBus.bind(this, sug._id.toString())}>
+            <i className="fa fa-times"></i>
+          </span>
+        </div>
+      ));
+    }
   }
 
   render() {
@@ -133,3 +117,10 @@ export default class SearchHome extends Component {
     );
   }
 }
+
+export default createContainer (() => {
+  return {
+    addedSuggestions: Session.get('addedSuggestions'),
+    addedBusses: Session.get('addedBusses'),
+  };
+}, SearchHome);

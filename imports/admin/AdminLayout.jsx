@@ -8,7 +8,7 @@ export default class AdminLayout extends Component {
     //let routes = this.props.routes;
     return (
       <div className="container-fluid">
-        <div className="row">
+        <div className="row adminlayout-wrapper">
           <div className="sidebar-wrapper">
           {this.props.sidebar}
           </div>

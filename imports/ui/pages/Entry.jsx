@@ -21,14 +21,24 @@ class Entry extends Component {
     this.state = {
       edit: false,
       editorContent: {},
-      name: "",
-      text: "",
+      name: this.props.entry.name,
+      text: this.props.entry.text,
     }
   }
 
-  handleNameChange(val) {
+  handleNameChange(event) {
+    event.preventDefault();
+    let val = event.target.value;
     this.setState({
       name: val,
+    });
+  }
+
+  handleTextChange(event) {
+    event.preventDefault();
+    let val = event.target.value;
+    this.setState({
+      text: val,
     });
   }
 
@@ -38,9 +48,8 @@ class Entry extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // Find the text field via the React ref
-    const name = ReactDOM.findDOMNode(this.refs.nameInput).value.trim();
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
+    const name = this.state.name;
+    const text = this.state.text;
     const area = this.state.addedSuggestions;
     const bus = this.state.addedBusses;
     const mainContent = this.state.editorContent;
@@ -117,12 +126,14 @@ class Entry extends Component {
   }
 
   createSectionStates() {
-    if(this.props.entry.sections !== undefined && !this.props.loading) {
-      return this.props.entry.sections.map((section, i) => (
-        this.setState({
-          [i]: section.content ? section.content : {},
-        })
-      ));
+    if(!this.props.loading) {
+      if(this.props.entry.sections !== undefined) {
+        return this.props.entry.sections.map((section, i) => (
+          this.setState({
+            [i]: section.content ? section.content : {},
+          })
+        ));
+      }
     }
   }
 
@@ -150,8 +161,11 @@ class Entry extends Component {
         <Jumbotron image={this.props.image}
                   edit={this.props.edit}
                   entryId={res._id}
-                  entryName={res.name}
-                  entryText={res.text} />
+                  entryName={this.state.name}
+                  entryText={this.state.text}
+                  handleNameChange={this.handleNameChange.bind(this)}
+                  handleTextChange={this.handleTextChange.bind(this)}
+                  />
 
         {res.sections ?
           <EntryNav links={res.sections}

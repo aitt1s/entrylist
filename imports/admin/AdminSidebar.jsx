@@ -39,12 +39,7 @@ export default class AdminSidebar extends Component {
                   <i className="fa fa-angle-left pull-right"></i>
                 </span>
               </Link>
-              <ul className="treeview-menu menu-open">
-                <li><a href="index.html"><i className="fa fa-circle-o"></i> Dashboard v1</a></li>
-                <li className=""><a href="index2.html"><i className="fa fa-circle-o"></i> Dashboard v2</a></li>
-              </ul>
             </li>
-            <li><a href="#"><i className="fa fa-bar-chart"></i> Statistics</a></li>
             <li className="treeview">
               <Link to="/admin/users">
                 <i className="fa fa-users"></i>
@@ -57,10 +52,19 @@ export default class AdminSidebar extends Component {
                 Entries
               </Link>
             </li>
-            <li className="treeview"><a href="#"><i className="fa fa-cog"></i> Settings</a></li>
-            <li className="treeview"><a href="#"><i className="fa fa-list-ol"></i> Logs</a></li>
-            <li className="treeview"><a href="#"><i className="fa fa-comment"></i> Comments</a></li>
-            <li className="treeview"><a href="#"><i className="fa fa-youtube-play"></i> Media</a></li>
+            <li className="treeview">
+              <Link to="/admin/areas">
+                <i className="fa fa-globe"></i>
+                Areas
+              </Link>
+            </li>
+            <li className="treeview">
+              <Link to="/admin/types">
+                <i className="fa fa-suitcase"></i>
+                Types
+              </Link>
+            </li>
+            <li className="treeview"><a href="#"><i className="fa fa-youtube-play"></i>Media</a></li>
           </ul>
           </section>
       </div>

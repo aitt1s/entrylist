@@ -30,12 +30,12 @@ export default class SingleSection extends Component {
                     mainContent={this.props.section.content} />
           }
           else {
-            return <ShowWysiwyg key="1" mainContent={this.props.section.content} />
+            return <ShowWysiwyg key="1" edit={this.props.edit} mainContent={this.props.section.content} />
           }
       }
 
       if(this.props.section.type == "Media section") {
-          return <MediaSection section={this.props.section} />
+          return <MediaSection edit={this.props.edit} section={this.props.section} />
       }
   }
 

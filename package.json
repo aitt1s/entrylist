@@ -1,21 +1,18 @@
 {
-  "name": "meteor-react-boilerplate",
-  "version": "1.0.1",
-  "description": "Meteor React Boilerplate",
+  "name": "entrylist",
+  "version": "1.0.0",
+  "description": "Meteor React EntryList",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AdamBrodzinski/meteor-react-boilerplate"
-  },
-  "author": "Ryen Beatty <ryen.beatty@gmail.com> (http://ryenbeatty.co)",
+
+  "author": "Juha Aittamaa <juha.aittamaa@gmail.com> (http://aittis.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AdamBrodzinski/meteor-react-boilerplate/issues"
+    "url": "http://aittis.com"
   },
-  "homepage": "https://github.com/AdamBrodzinski/meteor-react-boilerplate",
+  "homepage": "http://aittis.com",
   "dependencies": {
     "babel-plugin-transform-class-properties": "^6.16.0",
     "bcrypt": "^0.8.7",

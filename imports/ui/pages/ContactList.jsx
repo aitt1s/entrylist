@@ -27,7 +27,7 @@ class ContactList extends Component {
             </div>
           </div>
           <div className="col-xs-12 send-message-wrapper">
-            <button disabled={this.props.contactIds.length == 0 ? "disabled" : "" } className="btn btn-primary btn-lg" onClick={this.openModal.bind(this)}>
+            <button disabled={this.props.contactIds.length == 0 ? "disabled" : "" } className="btn btn-lg" onClick={this.openModal.bind(this)}>
               <i className="fa fa-envelope contact-favourites"></i>
               Contact favourites
             </button>

@@ -54,7 +54,7 @@ export default class AreasAndBusses extends Component {
   }
 
   renderAreas() {
-    if(this.props.area !== undefined) {
+    if(this.props.area !== undefined && this.props.area) {
       return this.props.area.map((area) => (
         <div key={area._id} className="place-label label label-primary">
           { area.mun }
@@ -64,7 +64,7 @@ export default class AreasAndBusses extends Component {
   }
 
   renderBusses() {
-    if(this.props.busses !== undefined) {
+    if(this.props.busses !== undefined && this.props.busses) {
       return this.props.busses.map((bus) => (
         <div key={bus._id} className="place-label label label-info">
           { bus.bname }
@@ -75,19 +75,23 @@ export default class AreasAndBusses extends Component {
 
 // These are for editing
   renderEditBusses() {
-    return this.state.addedBusses.map((bus) => (
-      <div key={bus._id} className="place-label label label-info">
-        { bus.bname } { this.props.edit ? this.editLabels("Busses", bus) : "" }
-      </div>
-    ));
+    if(this.props.busses !== undefined && this.props.busses) {
+      return this.state.addedBusses.map((bus) => (
+        <div key={bus._id} className="place-label label label-info">
+          { bus.bname } { this.props.edit ? this.editLabels("Busses", bus) : "" }
+        </div>
+      ));
+    }
   }
 
   renderEditAreas() {
-    return this.state.addedSuggestions.map((area) => (
-      <div key={area._id} className="place-label label label-primary">
-        { area.mun } { this.props.edit ? this.editLabels("Suggestion", area) : "" }
-      </div>
-    ));
+    if(this.props.area !== undefined && this.props.area) {
+      return this.state.addedSuggestions.map((area) => (
+        <div key={area._id} className="place-label label label-primary">
+          { area.mun } { this.props.edit ? this.editLabels("Suggestion", area) : "" }
+        </div>
+      ));
+    }
   }
 
   render() {

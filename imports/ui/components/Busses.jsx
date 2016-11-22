@@ -92,6 +92,7 @@ class Busses extends Component {
           renderSuggestion={this.renderSuggestion}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           inputProps={inputProps}
+          focusFirstSuggestion={true}
           id="bus"
         />
       </div>

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
-import { browserHistory} from 'react-router'
+import { browserHistory} from 'react-router';
 
 export default class Login extends Component {
 

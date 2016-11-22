@@ -6,39 +6,52 @@ import Loading from '../components/Loading.jsx';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class List extends Component {
-  constructor() {
-    super();
-    this.state = {
-      filters: [],
-      filtersBus: [],
-    };
+
+  getAreaFilters() {
+    let areas = [];
+    if(Session.get('addedSuggestions') !== undefined) {
+      return Session.get('addedSuggestions').map((filter) => (
+        filter.muncode
+      ));
+    }
+    else {
+      return areas;
+    }
+  }
+
+  getBusFilters() {
+    let busses = [];
+    if(Session.get('addedBusses') !== undefined) {
+      return Session.get('addedBusses').map((filter) => (
+        filter.bcode
+      ));
+    }
+    else {
+      return busses;
+    }
   }
 
   filterThis() {
-      const props = this.props;
-
-      if(props.filters.length == 0 && props.filtersBus.length == 0) {
+      if(this.getAreaFilters().length == 0 && this.getBusFilters().length == 0) {
         return Entries.find();
       }
 
-      if(props.filtersBus.length == 0) {
-        return Entries.find({"area.muncode": {$in: props.filters}});
+      if(this.getBusFilters().length == 0) {
+        return Entries.find({"area.muncode": {$in: this.getAreaFilters()}});
       }
 
-      if(props.filters.length == 0) {
-        return Entries.find({"bus.bcode": {$in: props.filtersBus}});
+      if(this.getAreaFilters().length == 0) {
+        return Entries.find({"bus.bcode": {$in: this.getBusFilters()}});
       }
 
       else {
-        return Entries.find({"bus.bcode": {$in: props.filtersBus}, 'area.muncode': {$in: props.filters}});
+        return Entries.find({"bus.bcode": {$in: this.getBusFilters()}, 'area.muncode': {$in: this.getAreaFilters()}});
       }
   }
 
   renderEntries() {
     return this.filterThis().map((entry) => (
-
       <SingleEntry key={entry._id} entry={entry} />
-
     ));
   }
 
@@ -67,6 +80,8 @@ export default ListContainer = createContainer(() => {
   const loading = !subscription.ready();
   return {
     loading,
-    entries: Entries.find({}).fetch(),
+    entries: Entries.find({'published': true}).fetch(),
+    addedSuggestions: Session.get('addedSuggestions'),
+    addedBusses: Session.get('addedBusses'),
   };
 }, List);

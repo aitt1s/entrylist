@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { Messages } from '../../api/Messages.js';
+
 
 export default class ContactModal extends Component {
   constructor(props) {
@@ -55,6 +58,42 @@ export default class ContactModal extends Component {
     ));
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    const from = ReactDOM.findDOMNode(this.refs.fromInput).value.trim();
+    const recipients = this.state.recipients;
+    const subject = ReactDOM.findDOMNode(this.refs.subjectInput).value.trim();
+    const message = ReactDOM.findDOMNode(this.refs.messageInput).value.trim();
+
+    recipients.map((recipient) => (
+      this.send(from, recipient.id, subject, message)
+    ));
+  }
+
+  send(from, recipient, subject, message) {
+    Meteor.call('messages.insert', from, recipient, subject, message, (err) => {
+      if(err) {
+        Bert.alert({
+          title: 'Error',
+          message: err.reason,
+          type: 'danger',
+          style: 'growl-top-right',
+          icon: 'fa-bell'
+        });
+      }
+      else {
+        Bert.alert({
+          title: 'Message sent',
+          message: 'Cool!',
+          type: 'success',
+          style: 'growl-top-right',
+          icon: 'fa-check'
+        });
+        $('#contactModal').modal('hide');
+      }
+    });
+  }
+
   render() {
     return (
       <div className="modal fade" id="contactModal" tabIndex="-1" role="dialog">
@@ -69,7 +108,7 @@ export default class ContactModal extends Component {
               <div className="modal-body">
                 <div className="form-group">
                   <label htmlFor="from">From</label>
-                  <input type="text" name="from" className="form-control" placeholder="Type your email address" />
+                  <input type="email" ref="fromInput" name="from" className="form-control" placeholder="Type your email address" />
                 </div>
 
                 <div className="form-group">
@@ -80,12 +119,17 @@ export default class ContactModal extends Component {
                 </div>
 
                 <div className="form-group">
+                  <label htmlFor="from">Subject</label>
+                  <input type="text" ref="subjectInput" name="from" className="form-control" placeholder="Type your email address" />
+                </div>
+
+                <div className="form-group">
                   <label htmlFor="message">Message</label>
-                  <textarea type="text" className="form-control message-area" placeholder="Write a message" />
+                  <textarea type="text" ref="messageInput" className="form-control message-area" placeholder="Write a message" />
                 </div>
               </div>
               <div className="modal-footer">
-                <button type="submit" className="btn btn-success">Send</button>
+                <button type="submit" onClick={this.handleSubmit.bind(this)} className="btn btn-success">Send</button>
                 <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </form>
