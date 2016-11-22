@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AreaComp from './AreaComp.jsx';
 import Busses from './Busses.jsx';
+import { Entries } from '../../api/Entries.js';
 
 export default class AreasAndBusses extends Component {
   constructor(props) {
@@ -44,13 +45,21 @@ export default class AreasAndBusses extends Component {
   onUpdate(val){
     this.setState({
       addedSuggestions: this.state.addedSuggestions.concat([val])
+    }, function() {
+      this.save();
     });
   }
 
   onUpdateBus(val){
     this.setState({
       addedBusses: this.state.addedBusses.concat([val])
+    }, function() {
+      this.save();
     });
+  }
+
+  save() {
+    Meteor.call('entries.update.areabus', this.props.entryId, this.state.addedSuggestions, this.state.addedBusses);
   }
 
   renderAreas() {

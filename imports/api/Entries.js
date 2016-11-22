@@ -167,7 +167,7 @@ Meteor.methods({
     return true;
   },
 
-  'entries.update'(entryId, name, text, bus, area, mainContent) {
+  'entries.update'(entryId, name, text, mainContent) {
     check(entryId, String);
     check(name, String);
     check(text, String);
@@ -182,8 +182,6 @@ Meteor.methods({
         $set: {
           "name": name,
           "text": text,
-          "bus": bus,
-          "area": area,
           "editedAt": new Date(),
         }
       });
@@ -197,13 +195,27 @@ Meteor.methods({
         $set: {
           "name": name,
           "text": text,
-          "bus": bus,
-          "area": area,
           "mainContent": mainContent,
           "editedAt": new Date(),
         }
       });
     }
+  },
+
+  'entries.update.areabus'(entryId, area, bus) {
+    check(entryId, String);
+
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    Entries.update(entryId, {
+      $set: {
+        "bus": bus,
+        "area": area,
+        "editedAt": new Date(),
+      }
+    });
   }
 
 });

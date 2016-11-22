@@ -50,10 +50,8 @@ class Entry extends Component {
     event.preventDefault();
     const name = this.state.name;
     const text = this.state.text;
-    const area = this.state.addedSuggestions;
-    const bus = this.state.addedBusses;
     const mainContent = this.state.editorContent;
-    Meteor.call('entries.update', this.props.entry._id, name, text, bus, area, mainContent, (err) => {
+    Meteor.call('entries.update', this.props.entry._id, name, text, mainContent, (err) => {
       if(err) {
         Bert.alert({
           title: 'Error',
@@ -145,17 +143,31 @@ class Entry extends Component {
     ));
   }
 
+  onUpdate(val){
+    this.setState({
+      addedSuggestions: this.state.addedSuggestions.concat([val])
+    });
+    console.log("ts");
+
+  }
+
+  onUpdateBus(val){
+    this.setState({
+      addedBusses: this.state.addedBusses.concat([val])
+    });
+  }
+
   render() {
     let res = this.props.entry;
     if(!res) {
       return <div className="container">Loading</div>
     }
-
     return (
       <div className="container entry-container">
         { this.props.edit ?
         <EntryEditPanel handleSubmit={this.handleSubmit.bind(this)}
                         onClick={this.onClick.bind(this)}
+                        entryId={res._id}
                         /> : ""}
 
         <Jumbotron image={this.props.image}
@@ -176,7 +188,11 @@ class Entry extends Component {
         {this.props.loading ? "" :
           <AreasAndBusses area={this.props.entry.area}
                           busses={this.props.entry.bus}
-                          edit={this.props.edit} /> }
+                          edit={this.props.edit}
+                          entryId={res._id}
+                          onUpdateBus={this.onUpdateBus.bind(this)}
+                          onUpdate={this.onUpdate.bind(this)}
+                          /> }
 
         <div className="row">
           <div className="col-sm-12">
