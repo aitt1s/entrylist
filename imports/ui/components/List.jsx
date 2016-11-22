@@ -80,7 +80,7 @@ export default ListContainer = createContainer(() => {
   const loading = !subscription.ready();
   return {
     loading,
-    entries: Entries.find({'published': true}).fetch(),
+    entries: Entries.find({}).fetch(),
     addedSuggestions: Session.get('addedSuggestions'),
     addedBusses: Session.get('addedBusses'),
   };
