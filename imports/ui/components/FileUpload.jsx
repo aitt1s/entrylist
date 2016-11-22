@@ -20,7 +20,7 @@ const FileUploadComponent = React.createClass({
     var handle = Meteor.subscribe('sectionimages');
     return {
       docsReadyYet: handle.ready(),
-      docs: SectionImages.find().fetch() // Collection is Images
+      docs: SectionImages.find({'meta.sectionId': this.props.sectionId }).fetch() // Collection is Images
     };
   },
 
@@ -40,6 +40,7 @@ const FileUploadComponent = React.createClass({
           file: file,
           meta: {
             locator: self.props.fileLocator,
+            sectionId: this.props.sectionId
           },
           allowWebWorkers: true // If you see issues with uploads, change this to false
         }, false);

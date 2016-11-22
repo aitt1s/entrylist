@@ -39,4 +39,12 @@ if (Meteor.isServer) {
   });
 }
 
+Meteor.methods({
+  'RemoveFile'(id) {
+    SectionImages.remove(id);
+    return true;
+  },
+  
+});
+
 export default SectionImages;

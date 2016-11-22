@@ -160,7 +160,7 @@ const FileUploadComponent = React.createClass({
                   onChange={this.uploadIt}/>
                  </div>
                  { typeof logo !== "undefined" ?
-                 <span className="btn btn-success btn-xs delete-logo" onClick={this.deleteImage.bind(this, logo._id)}>
+                 <span className="btn btn-success btn-primary delete-logo" onClick={this.deleteImage.bind(this, logo._id)}>
                   <i className="fa fa-times" aria-hidden="true"></i>
                 </span>
                  : "" }

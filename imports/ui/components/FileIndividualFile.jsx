@@ -49,8 +49,6 @@ const IndividualFile = React.createClass({
         <div className="col-md-12">
           <div className="col-md-12">
             <strong>{this.props.fileName}</strong>
-            <div className="m-b-sm">
-            </div>
           </div>
           <button onClick={this.renameFile} className="btn btn-outline btn-primary btn-sm">
             Rename
